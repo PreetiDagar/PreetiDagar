@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Activity, AlertTriangle, ArrowDownRight, ArrowUpRight, BatteryCharging, Bolt, BrainCircuit, ChevronDown, CircleHelp, CloudSun, Cpu, Gauge, Leaf, Network, RefreshCw, ShieldCheck, SolarPanel, Sparkles, Sun, Zap } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Activity, AlertTriangle, ArrowDownRight, ArrowUpRight, BatteryCharging, Bolt, BrainCircuit, ChevronDown, CircleHelp, Cpu, Gauge, Leaf, Network, RefreshCw, ShieldCheck, Sparkles, Sun, Zap } from "lucide-react";
 
 type Point={time:string; demand:number; solar:number; baseline:number};
 type ApiSummary={source:string;generated_at:string;points:Point[];anomalies:{time:string;value:number;reason:string;severity:string}[];recommendation:{action:string;reason:string;estimated_savings_kwh:number}};
