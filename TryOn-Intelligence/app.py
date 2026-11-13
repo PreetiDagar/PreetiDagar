@@ -26,7 +26,7 @@ CONSTRUCTS = {
 LABELS = {
     1:"Convenience",2:"Product comparison",3:"Information access",
     4:"Touch and feel",5:"Fit and quality checking",6:"Physical confidence",
-    7:"AR realism",8:"AR accuracy",9:"Ease of use",10:"Responsiveness",11:"Interactivity",
+    7:"AR realism",8:"AR accuracy",9:"Ease of use",10:"Product interaction",11:"AR trust",
     12:"Uncertainty reduction",13:"Perceived risk reduction",14:"Purchase confidence",
     15:"Webrooming",16:"Showrooming",17:"Store-visit substitution",18:"Channel continuity",
     19:"Purchase willingness",20:"Online purchase intention",21:"AR-assisted purchase intention",
@@ -301,7 +301,7 @@ if page=="Executive Overview":
         else: st.info("Add a Shopping Journey column to analyse webrooming and showrooming.")
     st.markdown("#### S-O-R research lens")
     x,y,z=st.columns(3)
-    x.markdown('<div class="panel"><div class="kicker">STIMULUS</div><h3>AR Experience Quality</h3><p class="muted">Realism, accuracy, ease, responsiveness and interactivity.</p></div>',unsafe_allow_html=True)
+    x.markdown('<div class="panel"><div class="kicker">STIMULUS</div><h3>AR Experience Quality</h3><p class="muted">Realism, accuracy, ease, product interaction and trust.</p></div>',unsafe_allow_html=True)
     y.markdown('<div class="panel"><div class="kicker">ORGANISM</div><h3>Confidence & value</h3><p class="muted">Risk reduction and online / physical store value.</p></div>',unsafe_allow_html=True)
     z.markdown('<div class="panel"><div class="kicker">RESPONSE</div><h3>Omnichannel & intent</h3><p class="muted">Channel behaviour and purchase intention.</p></div>',unsafe_allow_html=True)
 
