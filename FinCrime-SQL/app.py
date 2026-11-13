@@ -176,19 +176,18 @@ p,li,label,.stCaption{color:#d0bddc}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 """,unsafe_allow_html=True)
-""",unsafe_allow_html=True)
-""",unsafe_allow_html=True)
 
 def money(v):
     return f"₹{v:,.0f}"
 
 def chart_theme(fig,height=235):
     fig.update_layout(template="plotly_dark",paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="DM Sans",color="#e0cfea",size=10),margin=dict(l=14,r=14,t=32,b=24),height=height,
-        legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9)),hoverlabel=dict(bgcolor="#2b1740",font_color="#fff3ff"),
-        transition=dict(duration=550,easing="cubic-in-out"),uirevision="fincrime-visual")
-    fig.update_xaxes(gridcolor="#3b2850",tickfont_color="#c5afd5",automargin=True)
-    fig.update_yaxes(gridcolor="#3b2850",tickfont_color="#c5afd5",automargin=True)
+        font=dict(family="DM Sans",color="#eadcf4",size=10),margin=dict(l=14,r=14,t=30,b=22),height=height,
+        legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9,color="#d9c5e8")),
+        hoverlabel=dict(bgcolor="#29133a",bordercolor="#c66bff",font_color="#fff4ff"),
+        transition=dict(duration=450,easing="cubic-in-out"),uirevision="fincrime-cosmic")
+    fig.update_xaxes(gridcolor="rgba(190,130,220,.16)",zerolinecolor="rgba(190,130,220,.18)",tickfont_color="#cbb6dc",automargin=True)
+    fig.update_yaxes(gridcolor="rgba(190,130,220,.16)",zerolinecolor="rgba(190,130,220,.18)",tickfont_color="#cbb6dc",automargin=True)
     return fig
 
 
