@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-st.set_page_config(page_title="TryOn Intelligence | AR Shopping Analytics", page_icon="🪞", layout="wide")
+st.set_page_config(page_title="TryOn Intelligence | AR Shopping Analytics", page_icon="🪞", layout="wide", initial_sidebar_state="expanded")
 
 CONSTRUCTS = {
     "Online Shopping Value": [1,2,3],
@@ -50,7 +50,7 @@ def alpha(frame):
 def theme_chart(fig):
     fig.update_layout(template="plotly_dark" if mode=="Dark" else "plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=C["text"],family="Inter, Arial"),margin=dict(l=12,r=12,t=35,b=12),height=340)
+        font=dict(color=C["text"],family="Inter, Arial"),margin=dict(l=12,r=12,t=35,b=12),height=310)
     fig.update_xaxes(gridcolor=C["grid"]); fig.update_yaxes(gridcolor=C["grid"])
     return fig
 
@@ -121,15 +121,76 @@ div[data-testid="stMetricValue"] {{color:{C['text']} !important;}}
 .stButton button,.stDownloadButton button {{border-radius:10px;border:1px solid {C['border']};}}
 .stButton button:hover,.stDownloadButton button:hover {{border-color:{C['accent']};transform:translateY(-1px);}}
 @media(max-width:900px) {{.block-container {{padding-left:1rem;padding-right:1rem;}}}}
-@media(prefers-reduced-motion:reduce) {{*,*::before,*::after {{animation-duration:.01ms !important;transition-duration:.01ms !important;}}}}
+
+/* ===== Inspired by the AR research visual system: aurora, holo-glass and motion ===== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+html, body, [class*="css"] {{font-family:'Instrument Sans',Inter,Arial,sans-serif;}}
+.stApp {{background:
+ radial-gradient(ellipse at 8% 3%,color-mix(in srgb,{C['accent']} 13%,transparent),transparent 34%),
+ radial-gradient(ellipse at 92% 18%,rgba(139,108,255,.13),transparent 32%),
+ radial-gradient(ellipse at 55% 100%,rgba(224,48,111,.08),transparent 36%),
+ {C['bg']};}}
+.stApp:before {{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.25;
+ background-image:linear-gradient({C['grid']} 1px,transparent 1px),linear-gradient(90deg,{C['grid']} 1px,transparent 1px);
+ background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 78%);}}
+.block-container {{position:relative;z-index:1;max-width:1420px;padding-top:1.05rem;padding-bottom:1.4rem;}}
+[data-testid="stSidebar"] {{background:linear-gradient(165deg,{C['panel']},color-mix(in srgb,{C['panel']} 86%,{C['accent']} 14%));}}
+[data-testid="stSidebar"] > div:first-child {{border-right:1px solid {C['border']};}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label {{padding:5px 9px;border-radius:9px;}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {{background:color-mix(in srgb,{C['accent']} 13%,transparent);}}
+[data-testid="stSidebar"] [data-testid="stFileUploader"] section {{border:1px dashed {C['accent']};border-radius:12px;background:color-mix(in srgb,{C['panel2']} 75%,transparent);}}
+[data-testid="stHeader"] {{background:transparent;}}
+h1,h2,h3,h4 {{font-family:'Bricolage Grotesque',Inter,sans-serif;letter-spacing:-.025em;}}
+h2,h3 {{font-weight:700;}}
+.hero {{min-height:210px;border-radius:22px;padding:30px 34px;margin:4px 0 24px;
+ background:linear-gradient(112deg,color-mix(in srgb,{C['panel']} 95%,{C['accent']} 5%),{C['panel2']} 62%,color-mix(in srgb,{C['panel']} 80%,#8B7CFF 20%));
+ box-shadow:0 18px 48px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.10);}}
+.hero:before {{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+ background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.08) 48%,transparent 68%);
+ transform:translateX(-110%);animation:heroSweep 9s ease-in-out infinite;}}
+.hero:after {{width:300px;height:300px;right:-65px;top:-145px;
+ background:radial-gradient(circle,rgba(49,224,245,.25),rgba(139,108,255,.14) 42%,transparent 70%);
+ filter:blur(4px);animation:orbFloat 8s ease-in-out infinite alternate;}}
+.hero h1 {{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,3.15rem);letter-spacing:-.045em;
+ background:linear-gradient(100deg,{C['text']},#67dff0 55%,#b7a5ff);-webkit-background-clip:text;background-clip:text;color:transparent;}}
+.hero p {{max-width:760px;line-height:1.55;}}
+.hero .kicker {{font:600 .72rem 'JetBrains Mono',monospace;letter-spacing:.16em;color:{C['accent']};}}
+.hero-tags {{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px;}}
+.hero-tags span {{border:1px solid {C['border']};border-radius:99px;padding:5px 11px;font:500 .72rem 'JetBrains Mono',monospace;color:{C['muted']};background:rgba(255,255,255,.035);}}
+@keyframes heroSweep {{0%,58%{{transform:translateX(-110%)}}82%,100%{{transform:translateX(110%)}}}}
+@keyframes orbFloat {{from{{transform:translate(0,0) scale(.92)}}to{{transform:translate(-22px,24px) scale(1.12)}}}}
+div[data-testid="stMetric"] {{position:relative;overflow:hidden;min-height:112px;background:linear-gradient(145deg,{C['panel']},color-mix(in srgb,{C['panel']} 84%,{C['accent']} 16%));
+ border:1px solid {C['border']};border-radius:16px;padding:15px 17px;box-shadow:0 9px 28px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.045);transition:transform .25s,border-color .25s,box-shadow .25s;}}
+div[data-testid="stMetric"]:hover {{transform:translateY(-3px);border-color:{C['accent']};box-shadow:0 12px 30px color-mix(in srgb,{C['accent']} 15%,transparent);}}
+div[data-testid="stMetric"] label p {{font-family:'JetBrains Mono',monospace;font-size:.68rem!important;letter-spacing:.08em;text-transform:uppercase;}}
+div[data-testid="stMetricValue"] {{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;}}
+[data-testid="stPlotlyChart"] {{border:1px solid {C['border']};border-radius:16px;padding:7px;background:color-mix(in srgb,{C['panel']} 68%,transparent);box-shadow:0 10px 28px rgba(0,0,0,.10);}}
+[data-testid="stDataFrame"],[data-testid="stTable"] {{border:1px solid {C['border']};border-radius:14px;overflow:hidden;}}
+[data-testid="stTabs"] button {{border-radius:10px 10px 0 0;}}
+.stButton button,.stDownloadButton button {{border-radius:10px;border:1px solid {C['border']};font-weight:600;transition:all .2s;}}
+.stButton button[kind="primary"] {{background:linear-gradient(110deg,{C['accent']},#7564d9);color:#071321;border:0;}}
+.stButton button:hover,.stDownloadButton button:hover {{border-color:{C['accent']};transform:translateY(-2px);box-shadow:0 7px 18px color-mix(in srgb,{C['accent']} 18%,transparent);}}
+[data-testid="stExpander"] {{border:1px solid {C['border']};border-radius:13px;background:{C['panel']};}}
+hr {{border-color:{C['border']};opacity:.8;}}
+.small-note {{font:500 .7rem 'JetBrains Mono',monospace;letter-spacing:.08em;color:{C['muted']};}}
+@media(max-width:900px) {{
+ .block-container {{padding-left:1rem;padding-right:1rem;}}
+ .hero {{padding:23px 21px;min-height:0;}}
+ .hero:after {{width:190px;height:190px;right:-90px;}}
+ [data-testid="stPlotlyChart"] {{padding:2px;}}
+}}
+@media(prefers-reduced-motion:reduce) {{
+ *,*::before,*::after {{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
+}}
 </style>
 """,unsafe_allow_html=True)
 
 st.markdown(f"""
 <div class="hero">
- <div class="kicker">AR COMMERCE · CUSTOMER EXPERIENCE INTELLIGENCE</div>
- <h1 style="margin:.35rem 0 .2rem 0;">🪞 TryOn Intelligence</h1>
- <p style="font-size:1.02rem;color:{C['muted']};margin:0;">Understand how virtual try-on shapes confidence, channel choices and purchase intention.</p>
+ <div class="kicker">✦ AR COMMERCE / CUSTOMER EXPERIENCE INTELLIGENCE</div>
+ <h1 style="margin:.45rem 0 .35rem 0;">🪞 TryOn Intelligence</h1>
+ <p style="font-size:1.04rem;color:{C['muted']};margin:0;">See how virtual try-on shapes shopper confidence, omnichannel choices and purchase intention.</p>
+ <div class="hero-tags"><span>21 SURVEY ITEMS</span><span>6 RESEARCH CONSTRUCTS</span><span>S-O-R + DUAL-FACTOR LENS</span></div>
 </div>
 """,unsafe_allow_html=True)
 
