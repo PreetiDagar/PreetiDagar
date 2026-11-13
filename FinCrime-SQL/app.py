@@ -134,92 +134,46 @@ con.execute("CREATE TABLE alerts AS SELECT * FROM alerts_df")
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
-:root{--bg:#08111e;--surface:#101d2d;--surface2:#14243a;--line:#263a52;--text:#e8eff8;--muted:#8fa3bb;--cyan:#39bde8;--blue:#3989d8;--amber:#f4a340;--red:#ef6470;--green:#43c6a5}
-.stApp{background:radial-gradient(ellipse at 75% -15%,rgba(33,105,150,.22),transparent 38%),linear-gradient(135deg,#08111e,#0b1727 55%,#0b1b2b);color:var(--text);font-family:'Manrope',sans-serif}
-[data-testid="stHeader"]{background:rgba(8,17,30,.94);height:2.3rem}
-[data-testid="stSidebar"]{background:linear-gradient(180deg,#0b1727,#0d1d30 70%,#101d2d);border-right:1px solid #243850}
-[data-testid="stSidebar"] *{color:#dce8f5!important}
-[data-testid="stSidebar"] [data-testid="stRadio"] label{padding:6px 9px;border:1px solid #203750;border-radius:8px;margin:2px 0;background:rgba(16,35,55,.5)}
-[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{background:#162b42;border-color:#39bde8}
-.block-container{max-width:1600px;padding:.65rem 1.15rem .65rem}
-h1,h2,h3,h4{color:#edf4fc!important;font-family:'Manrope',sans-serif!important;letter-spacing:-.025em}
-p,li,label,.stCaption{color:#aebed0}
-.hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(105deg,rgba(19,39,61,.98),rgba(12,30,48,.96));border:1px solid #29425d;border-radius:13px;padding:11px 17px;margin:0 0 9px;box-shadow:0 10px 26px rgba(0,0,0,.2)}
-.hero:after{content:"";position:absolute;right:5%;top:-70px;width:160px;height:160px;border:1px solid rgba(57,189,232,.24);border-radius:50%;box-shadow:0 0 0 16px rgba(57,189,232,.035),0 0 0 32px rgba(57,189,232,.025);pointer-events:none}
-.eyebrow{font:600 9px 'IBM Plex Mono';letter-spacing:.17em;color:#5dc8ec;text-transform:uppercase}
-.hero h1{font-size:24px;margin:2px 0 1px;color:#f0f5fb}
-.hero p{font-size:10px;margin:0;color:#9db0c4}
-.pill{display:inline-block;padding:3px 8px;border-radius:30px;background:#10243a;border:1px solid #2b4864;font:9px 'IBM Plex Mono';letter-spacing:.06em;color:#9fb5cc;margin:6px 5px 0 0}
-.metric{background:linear-gradient(145deg,#14263c,#101e30);border:1px solid #2b435d;border-radius:11px;padding:9px 12px;box-shadow:0 7px 20px rgba(0,0,0,.15)}
-.panel{background:linear-gradient(145deg,rgba(18,34,53,.96),rgba(13,27,43,.98));border:1px solid #263d56;border-radius:11px;padding:10px 12px;margin-bottom:8px}
-h1,h2,h3{color:#edf4fc!important}
-[data-testid="stDataFrame"],[data-testid="stTable"]{border:1px solid #2a4059;border-radius:8px;overflow:hidden;background:#0e1b2b}
-.stButton button,.stDownloadButton button{background:#142942;color:#dceafa;border:1px solid #365571;border-radius:8px;font-weight:600;min-height:31px}
-.stButton button[kind="primary"]{background:linear-gradient(100deg,#176f9c,#1686a4);border:1px solid #39bde8;color:#fff}
-.stTextInput input,.stTextArea textarea,.stSelectbox div[data-baseweb="select"]>div,.stNumberInput input{background:#0d1c2d!important;color:#eaf2fb!important;border-color:#304861!important}
-[data-testid="stPlotlyChart"]{background:linear-gradient(145deg,rgba(16,30,47,.9),rgba(12,25,40,.95));border:1px solid #263d56;border-radius:10px;padding:3px}
-div[data-testid="stMetric"]{background:#13253a;border:1px solid #2b435d;border-radius:9px;padding:7px 10px}
-div[data-testid="stMetricLabel"] p{color:#92a9c1!important;font-size:10px!important;text-transform:uppercase;letter-spacing:.05em}
-div[data-testid="stMetricValue"]{color:#f1f6fc!important;font-family:'IBM Plex Mono'}
-div[data-testid="stAlert"]{border-radius:8px}
-hr{border-color:#263a52}
-footer{visibility:hidden}
-@media(max-width:900px){.block-container{padding:.5rem}.hero h1{font-size:20px}}
-/* FORENSIC NEON OVERRIDES */
-:root{--fc-cyan:#55d9ff;--fc-amber:#ff9b3c}
-html,body,[data-testid="stAppViewContainer"],.stApp{background:radial-gradient(ellipse at 55% 42%,rgba(12,55,85,.34),transparent 48%),linear-gradient(135deg,#030812,#071323 58%,#091827)!important;color:#eaf3ff!important}
-[data-testid="stSidebar"]{background:linear-gradient(180deg,#06111f,#0b1c2e)!important;border-right:1px solid #24445f!important}
-.block-container{max-width:100%!important;padding:.35rem .85rem .4rem!important}
-.hero{display:block;padding:7px 13px;margin-bottom:6px;border-radius:8px;background:linear-gradient(100deg,#0b1c30,#0d2940);border:1px solid #28516d;box-shadow:inset 0 0 22px #1b9ac010,0 8px 24px #0007}
-.hero h1{font-size:20px!important;margin:0!important}.hero p{font-size:10px;margin:0}
-.hero:after{content:"";position:absolute;right:6%;top:-70px;width:160px;height:160px;border:1px solid #55d9ff44;border-radius:50%;box-shadow:0 0 0 14px #55d9ff0c,0 0 0 28px #55d9ff09,0 0 28px #55d9ff22;animation:fcspin 12s linear infinite}
-@keyframes fcspin{to{transform:rotate(360deg)}}
-.eyebrow{font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#65dfff}
-.pill{background:#0b2338;border:1px solid #2c5875;color:#a7d9ec;font:8px 'IBM Plex Mono';padding:3px 7px;border-radius:20px}
-.panel,.metric,[data-testid="stMetric"]{background:linear-gradient(145deg,#102238,#081727)!important;border:1px solid #294964!important;border-radius:8px!important;box-shadow:inset 0 0 18px #39bdf00a,0 7px 18px #0005}
-[data-testid="stMetric"]{padding:5px 8px!important}
-[data-testid="stMetricLabel"] p{font-size:9px!important;color:#91acc4!important;letter-spacing:.08em;text-transform:uppercase}
-[data-testid="stMetricValue"]{font:600 18px 'IBM Plex Mono'!important;color:#f2f8ff!important}
-[data-testid="stPlotlyChart"]{background:linear-gradient(145deg,#081727,#050d19);border:1px solid #254863;border-radius:9px;padding:2px;box-shadow:0 0 18px #1685b018}
-[data-testid="stDataFrame"]{border:1px solid #28465f;border-radius:7px;overflow:hidden}
-.stButton button,.stDownloadButton button{background:linear-gradient(100deg,#102e49,#10405a)!important;color:#effaff!important;border:1px solid #3b7796!important;border-radius:7px!important}
-.stButton button[kind="primary"]{background:linear-gradient(100deg,#087ca5,#087fa5)!important;border-color:#55d9ff!important;box-shadow:0 0 14px #32bce833}
-.stTextInput input,.stTextArea textarea,.stSelectbox div[data-baseweb="select"]>div,.stNumberInput input{background:#081a2b!important;color:#eff8ff!important;border-color:#31516c!important}
-[data-testid="stSidebar"] [data-testid="stRadio"] label{background:#0b2033;border:1px solid #1d3d56;border-radius:7px;padding:5px 8px;margin:2px 0}
-[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{border-color:#55d9ff;box-shadow:0 0 12px #55d9ff22}
-h1,h2,h3,h4{color:#f0f7ff!important}p,label,.stCaption{color:#a9bdd1}
-[data-testid="stVerticalBlock"]{gap:.45rem}hr{border-color:#20394f}
-footer{visibility:hidden}
-
-/* FUTURISTIC POLISH / MICRO-INTERACTIONS */
-:root{--fc-cyan:#62e0ff;--fc-blue:#398dff;--fc-amber:#ffad55;--fc-glass:rgba(12,29,48,.82)}
-.stApp{background-image:radial-gradient(ellipse at 12% 8%,rgba(42,112,176,.13),transparent 27%),radial-gradient(ellipse at 86% 72%,rgba(20,156,184,.10),transparent 30%),linear-gradient(135deg,#030812 0%,#071323 55%,#081a29 100%)!important}
-[data-testid="stMainBlockContainer"]{animation:fc-enter .55s ease-out both}
-@keyframes fc-enter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-.hero{isolation:isolate;min-height:70px;background:linear-gradient(105deg,rgba(9,25,43,.98),rgba(12,39,60,.94) 62%,rgba(8,25,43,.98));border:1px solid rgba(91,203,244,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 32px rgba(34,160,214,.09),0 8px 26px rgba(0,0,0,.28),0 0 20px rgba(34,170,225,.07)}
-.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 20%,rgba(85,213,255,.06) 48%,transparent 70%);background-size:220% 100%;animation:fc-sheen 9s ease-in-out infinite}
-@keyframes fc-sheen{0%,100%{background-position:120% 0}50%{background-position:-80% 0}}
-.hero:after{border-color:rgba(98,224,255,.42);box-shadow:0 0 0 13px rgba(98,224,255,.055),0 0 0 27px rgba(98,224,255,.035),0 0 34px rgba(70,194,255,.22);animation:fc-orbit 18s linear infinite,fc-breathe 4s ease-in-out infinite}
-@keyframes fc-orbit{to{transform:rotate(360deg)}}
-@keyframes fc-breathe{0%,100%{opacity:.58}50%{opacity:1}}
-.panel,.metric,[data-testid="stMetric"]{position:relative;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-.panel:hover,.metric:hover,[data-testid="stMetric"]:hover{transform:translateY(-2px);border-color:rgba(98,224,255,.68)!important;box-shadow:inset 0 0 22px rgba(57,189,240,.08),0 9px 25px rgba(0,0,0,.30),0 0 17px rgba(57,189,240,.10)!important}
-[data-testid="stPlotlyChart"]{position:relative;overflow:hidden;border:1px solid rgba(69,151,194,.42);box-shadow:inset 0 0 26px rgba(45,161,215,.055),0 7px 22px rgba(0,0,0,.22),0 0 15px rgba(35,153,210,.07);transition:border-color .25s ease,box-shadow .25s ease}
-[data-testid="stPlotlyChart"]:hover{border-color:rgba(98,224,255,.72);box-shadow:inset 0 0 28px rgba(45,180,235,.08),0 8px 26px rgba(0,0,0,.28),0 0 22px rgba(45,180,235,.13)}
-[data-testid="stPlotlyChart"] svg .scatterlayer path.js-line{filter:drop-shadow(0 0 3px rgba(68,197,255,.55))}
-[data-testid="stPlotlyChart"] svg .scatterlayer .point{filter:drop-shadow(0 0 4px rgba(74,201,255,.42))}
-[data-testid="stSidebar"] [data-testid="stRadio"] label{transition:all .18s ease}
-[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{transform:translateX(3px);background:linear-gradient(90deg,#102d45,#0b2033)}
-.stButton button,.stDownloadButton button{transition:all .18s ease;box-shadow:0 3px 10px rgba(0,0,0,.16)}
-.stButton button:hover,.stDownloadButton button:hover{transform:translateY(-1px);border-color:#62e0ff!important;box-shadow:0 0 15px rgba(76,205,255,.18)}
-[data-testid="stDataFrame"]{box-shadow:0 6px 18px rgba(0,0,0,.16)}
-[data-testid="stDataFrame"] th{font-size:11px!important;letter-spacing:.025em}
-[data-testid="stDataFrame"] td{font-size:11px!important}
-h1,h2,h3,h4{letter-spacing:-.035em}
-h2{font-size:1.22rem!important}h3{font-size:1.02rem!important}
-.stCaption{font-size:10px!important}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+:root{--bg:#071321;--surface:#0e2032;--surface2:#13283d;--line:#29445d;--text:#eaf2fb;--muted:#9aafc4;--cyan:#55d9ff;--amber:#ffad55;--red:#ff6878;--green:#55d6ad}
+html,body,[data-testid="stAppViewContainer"],.stApp{background:radial-gradient(ellipse at 72% 0%,rgba(29,100,145,.16),transparent 38%),linear-gradient(145deg,#06101c,#091827 60%,#0a1b2b)!important;color:var(--text)!important;font-family:'Manrope',sans-serif}
+[data-testid="stHeader"]{background:rgba(6,16,28,.96)!important;height:2rem}
+[data-testid="stSidebar"]{background:linear-gradient(180deg,#081522,#0c1e30)!important;border-right:1px solid #203a52!important}
+[data-testid="stSidebar"] *{color:#dce8f5}
+[data-testid="stSidebar"] [data-testid="stRadio"] label{padding:6px 9px;border:1px solid #203a52;border-radius:7px;margin:3px 0;background:#0d2032;font-size:12px}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{border-color:#55d9ff;background:#112b40}
+.block-container{max-width:100%!important;padding:.45rem .8rem .45rem!important}
+h1,h2,h3,h4{color:#edf5ff!important;font-family:'Manrope',sans-serif!important;letter-spacing:-.02em}
+p,li,label,.stCaption{color:#aebfd1}
+.hero{position:relative;overflow:hidden;background:linear-gradient(105deg,#10253a,#0d3048 68%,#102338);border:1px solid #315773;border-radius:10px;padding:9px 14px;margin:0 0 8px;box-shadow:inset 0 0 22px rgba(60,185,230,.06),0 5px 15px rgba(0,0,0,.18)}
+.hero:after{content:"";position:absolute;right:7%;top:-82px;width:145px;height:145px;border:1px solid rgba(85,217,255,.25);border-radius:50%;box-shadow:0 0 0 13px rgba(85,217,255,.035),0 0 0 26px rgba(85,217,255,.02);pointer-events:none}
+.hero h1{font-size:21px!important;margin:0!important}.hero p{font-size:10px;margin:2px 0 0;color:#a9bed2}
+.eyebrow{font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#68dafa;text-transform:uppercase}
+.pill{display:inline-block;padding:3px 7px;border-radius:20px;background:#10283d;border:1px solid #31536c;font:8px 'IBM Plex Mono';color:#b2d9e8;margin:4px 4px 0 0}
+[data-testid="stMetric"]{background:linear-gradient(145deg,#12283d,#0c1d2e)!important;border:1px solid #29465f!important;border-radius:8px!important;padding:5px 9px!important;box-shadow:0 4px 12px rgba(0,0,0,.16)!important}
+[data-testid="stMetricLabel"] p{font-size:9px!important;color:#9bb2c8!important;text-transform:uppercase;letter-spacing:.07em}
+[data-testid="stMetricValue"]{font:600 18px 'IBM Plex Mono'!important;color:#f1f7ff!important}
+[data-testid="stPlotlyChart"]{background:linear-gradient(145deg,#0b1b2b,#071421)!important;border:1px solid #294a63!important;border-radius:9px!important;padding:2px!important;box-shadow:0 5px 16px rgba(0,0,0,.2),0 0 10px rgba(55,175,220,.05)!important}
+[data-testid="stDataFrame"]{border:1px solid #29465f!important;border-radius:7px!important;overflow:hidden}
+.stButton button,.stDownloadButton button{background:#132d45!important;color:#eaf6ff!important;border:1px solid #365d78!important;border-radius:7px!important;min-height:30px!important}
+.stButton button:hover,.stDownloadButton button:hover{border-color:#55d9ff!important;box-shadow:0 0 10px rgba(85,217,255,.13)!important}
+.stTextInput input,.stTextArea textarea,.stSelectbox div[data-baseweb="select"]>div,.stNumberInput input{background:#0b1d2d!important;color:#edf6ff!important;border-color:#31516a!important}
+.fc-queue{background:linear-gradient(150deg,#10243a,#0b1b2c);border:1px solid #2b4862;border-radius:9px;padding:10px;height:390px;overflow:hidden}
+.fc-queue-title{font-size:15px;font-weight:700;color:#f0f6ff;margin:4px 0 9px}
+.fc-alert-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center;padding:7px 2px;border-bottom:1px solid rgba(103,139,169,.18);min-height:48px}
+.fc-alert-row:last-child{border-bottom:0}
+.fc-alert-rule{font-size:10px;line-height:1.25;color:#e4eef8;white-space:normal;overflow-wrap:anywhere}
+.fc-alert-meta{font:8px 'IBM Plex Mono';color:#91a9bf}
+.fc-alert-tag{font:8px 'IBM Plex Mono';font-weight:600;letter-spacing:.04em;padding:3px 5px;border-radius:4px;background:#33202a;color:#ff8791}
+.fc-alert-tag.medium{background:#352a1b;color:#ffc16e}
+.fc-focus{background:linear-gradient(145deg,#11283d,#0b1b2c);border:1px solid #2b4a64;border-radius:9px;padding:10px 11px;margin-bottom:6px}
+.fc-focus-name{font-size:17px;font-weight:700;color:#f1f7ff;margin:5px 0}
+.fc-status{font:9px 'IBM Plex Mono';color:#63d9b5;line-height:1.9}
+[data-testid="stVerticalBlock"]{gap:.4rem}
+hr{border-color:#263e54!important}footer{visibility:hidden}
+@media(max-width:1100px){.block-container{padding:.35rem .45rem!important}.fc-queue{height:350px}.fc-alert-row{min-height:43px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+""",unsafe_allow_html=True)
 """,unsafe_allow_html=True)
 
 def money(v):
@@ -258,8 +212,8 @@ def make_network_figure(selected, sample):
     sizes=[32 if n==selected else 17 for n in nodes]
     fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers",marker=dict(size=[z+10 for z in sizes],color=cs,opacity=.12,line=dict(width=0)),hoverinfo="skip",showlegend=False))
     fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers+text",text=nodes,textposition="bottom center",textfont=dict(size=9,color="#dcecff"),marker=dict(size=sizes,color=cs,line=dict(width=1.4,color="#e9faff")),hovertemplate="<b>%{text}</b><extra>Linked entity</extra>",showlegend=False))
-    fig.update_layout(title=dict(text="ENTITY RELATIONSHIP INTELLIGENCE",font=dict(size=11,color="#7bdcff"),x=.02),xaxis=dict(visible=False,range=[-1.35,1.35]),yaxis=dict(visible=False,range=[-1.35,1.35],scaleanchor="x",scaleratio=1),margin=dict(l=3,r=3,t=32,b=20),height=440,showlegend=False)
-    return chart_theme(fig,440)
+    fig.update_layout(title=dict(text="ENTITY RELATIONSHIP INTELLIGENCE",font=dict(size=11,color="#7bdcff"),x=.02),xaxis=dict(visible=False,range=[-1.35,1.35]),yaxis=dict(visible=False,range=[-1.35,1.35],scaleanchor="x",scaleratio=1),margin=dict(l=3,r=3,t=30,b=18),height=365,showlegend=False)
+    return chart_theme(fig,365)
 
 def run_readonly_sql(query: str):
     if not query.strip():
@@ -311,28 +265,32 @@ st.markdown(f'<div class="hero"><div class="eyebrow">✦ {eyebrow}</div><h1>🛡
 # -------------------------------------------------------------------
 if page=="Command Center":
     total_value=transactions.amount.sum()
-    k=st.columns(4)
+    k=st.columns(4,gap="small")
     for col,label,value in zip(k,["Transactions monitored","Value monitored","Review signals","Entities in scope"],[f"{len(transactions):,}",money(total_value),f"{len(alerts):,}",f"{transactions.customer_id.nunique():,}"]):
         with col: st.metric(label,value)
-    left,center,right=st.columns([.78,2.1,.92],gap="small")
+    left,center,right=st.columns([1.0,2.35,1.0],gap="small")
     with left:
-        st.markdown('<div class="panel"><div class="eyebrow">PRIORITY QUEUE</div><h4 style="margin:5px 0 8px">Suspicious activity</h4></div>',unsafe_allow_html=True)
-        for _,ar in alerts.sort_values("risk_score",ascending=False).head(7).iterrows():
-            color="#ff6878" if ar.severity=="High" else "#ffae50"
-            st.markdown(f'<div class="panel" style="padding:7px 8px;border-left:3px solid {color};margin-bottom:4px"><div style="font:9px IBM Plex Mono;color:{color}">{ar.alert_id} · {ar.severity.upper()}</div><div style="font-size:10px;color:#edf6ff;margin:3px 0">{ar.rule_name}</div><div style="font-size:9px;color:#91a9c0">{ar.customer_id} · ₹{ar.amount:,.0f}</div></div>',unsafe_allow_html=True)
+        rows=[]
+        for _,ar in alerts.sort_values("risk_score",ascending=False).head(6).iterrows():
+            sev=str(ar.severity).upper()
+            tag="medium" if sev=="MEDIUM" else ""
+            color="#ffbd70" if sev=="MEDIUM" else "#ff8791"
+            rows.append(f'<div class="fc-alert-row"><div class="fc-alert-meta" style="color:{color}">{ar.alert_id} · {sev}</div><span class="fc-alert-tag {tag}">{int(ar.risk_score)} / 100</span><div class="fc-alert-rule">{ar.rule_name}</div><div class="fc-alert-meta">{ar.customer_id} · ₹{ar.amount:,.0f}</div></div>')
+        queue_html='<div class="fc-queue"><div class="eyebrow">PRIORITY QUEUE</div><div class="fc-queue-title">Suspicious activity</div>'+''.join(rows)+'</div>'
+        st.markdown(queue_html,unsafe_allow_html=True)
     with center:
-        st.markdown('<div class="eyebrow" style="margin:2px 0 4px">NETWORK INTELLIGENCE / RELATIONSHIP VIEW</div>',unsafe_allow_html=True)
+        st.markdown('<div class="eyebrow" style="margin:2px 0 5px">NETWORK INTELLIGENCE · RELATIONSHIP VIEW</div>',unsafe_allow_html=True)
         focus="C0007" if "C0007" in transactions.customer_id.values else transactions.customer_id.iloc[0]
         focus_rows=transactions[transactions.customer_id==focus].sort_values("transaction_ts",ascending=False).head(18)
         st.plotly_chart(make_network_figure(focus,focus_rows),use_container_width=True,config={"displayModeBar":False})
-        st.markdown('<div style="font:8px IBM Plex Mono;color:#819ab3">● FOCAL CUSTOMER &nbsp; ━ CYAN: ROUTINE LINK &nbsp; ━ AMBER: SEEDED PATTERN</div>',unsafe_allow_html=True)
+        st.markdown('<div style="font:8px IBM Plex Mono;color:#91a9bf;margin-top:-4px">● FOCAL CUSTOMER &nbsp; ━ CYAN: ROUTINE LINK &nbsp; ━ AMBER: SEEDED PATTERN</div>',unsafe_allow_html=True)
     with right:
         entity=customers[customers.customer_id==focus].iloc[0]
-        st.markdown(f'<div class="panel"><div class="eyebrow">FOCAL ENTITY</div><h3 style="margin:5px 0">{focus}</h3><div style="font-size:10px;color:#9ab1c8">{entity.customer_name}</div><div class="pill">{entity.customer_segment}</div><div class="pill">RISK {entity.risk_tier.upper()}</div></div>',unsafe_allow_html=True)
+        st.markdown(f'<div class="fc-focus"><div class="eyebrow">FOCAL ENTITY</div><div class="fc-focus-name">{focus}</div><div style="font-size:10px;color:#a7bbcf">{entity.customer_name}</div><div class="pill">{entity.customer_segment}</div><div class="pill">RISK {entity.risk_tier.upper()}</div></div>',unsafe_allow_html=True)
         st.metric("Linked transactions",f"{len(focus_rows):,}")
         st.metric("Value in view",money(focus_rows.amount.sum()))
         st.metric("Counterparties",f"{focus_rows.counterparty_id.nunique():,}")
-        st.markdown('<div class="panel"><div class="eyebrow">SYSTEM STATUS</div><div style="color:#55d6ad;font-size:10px">● SQL ENGINE ONLINE</div><div style="color:#55d6ad;font-size:10px">● RULE MONITORING ACTIVE</div><div style="color:#55d6ad;font-size:10px">● ENTITY GRAPH READY</div></div>',unsafe_allow_html=True)
+        st.markdown('<div class="fc-focus"><div class="eyebrow">SYSTEM STATUS</div><div class="fc-status">● SQL ENGINE ONLINE<br>● RULE MONITORING ACTIVE<br>● ENTITY GRAPH READY</div></div>',unsafe_allow_html=True)
     st.caption("Synthetic demonstration data. A review signal is not a finding of misconduct.")
 
 elif page=="Transaction Explorer":
