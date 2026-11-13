@@ -165,6 +165,31 @@ div[data-testid="stAlert"]{border-radius:8px}
 hr{border-color:#263a52}
 footer{visibility:hidden}
 @media(max-width:900px){.block-container{padding:.5rem}.hero h1{font-size:20px}}
+/* FORENSIC NEON OVERRIDES */
+:root{--fc-cyan:#55d9ff;--fc-amber:#ff9b3c}
+html,body,[data-testid="stAppViewContainer"],.stApp{background:radial-gradient(ellipse at 55% 42%,rgba(12,55,85,.34),transparent 48%),linear-gradient(135deg,#030812,#071323 58%,#091827)!important;color:#eaf3ff!important}
+[data-testid="stSidebar"]{background:linear-gradient(180deg,#06111f,#0b1c2e)!important;border-right:1px solid #24445f!important}
+.block-container{max-width:100%!important;padding:.35rem .85rem .4rem!important}
+.hero{display:block;padding:7px 13px;margin-bottom:6px;border-radius:8px;background:linear-gradient(100deg,#0b1c30,#0d2940);border:1px solid #28516d;box-shadow:inset 0 0 22px #1b9ac010,0 8px 24px #0007}
+.hero h1{font-size:20px!important;margin:0!important}.hero p{font-size:10px;margin:0}
+.hero:after{content:"";position:absolute;right:6%;top:-70px;width:160px;height:160px;border:1px solid #55d9ff44;border-radius:50%;box-shadow:0 0 0 14px #55d9ff0c,0 0 0 28px #55d9ff09,0 0 28px #55d9ff22;animation:fcspin 12s linear infinite}
+@keyframes fcspin{to{transform:rotate(360deg)}}
+.eyebrow{font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#65dfff}
+.pill{background:#0b2338;border:1px solid #2c5875;color:#a7d9ec;font:8px 'IBM Plex Mono';padding:3px 7px;border-radius:20px}
+.panel,.metric,[data-testid="stMetric"]{background:linear-gradient(145deg,#102238,#081727)!important;border:1px solid #294964!important;border-radius:8px!important;box-shadow:inset 0 0 18px #39bdf00a,0 7px 18px #0005}
+[data-testid="stMetric"]{padding:5px 8px!important}
+[data-testid="stMetricLabel"] p{font-size:9px!important;color:#91acc4!important;letter-spacing:.08em;text-transform:uppercase}
+[data-testid="stMetricValue"]{font:600 18px 'IBM Plex Mono'!important;color:#f2f8ff!important}
+[data-testid="stPlotlyChart"]{background:linear-gradient(145deg,#081727,#050d19);border:1px solid #254863;border-radius:9px;padding:2px;box-shadow:0 0 18px #1685b018}
+[data-testid="stDataFrame"]{border:1px solid #28465f;border-radius:7px;overflow:hidden}
+.stButton button,.stDownloadButton button{background:linear-gradient(100deg,#102e49,#10405a)!important;color:#effaff!important;border:1px solid #3b7796!important;border-radius:7px!important}
+.stButton button[kind="primary"]{background:linear-gradient(100deg,#087ca5,#087fa5)!important;border-color:#55d9ff!important;box-shadow:0 0 14px #32bce833}
+.stTextInput input,.stTextArea textarea,.stSelectbox div[data-baseweb="select"]>div,.stNumberInput input{background:#081a2b!important;color:#eff8ff!important;border-color:#31516c!important}
+[data-testid="stSidebar"] [data-testid="stRadio"] label{background:#0b2033;border:1px solid #1d3d56;border-radius:7px;padding:5px 8px;margin:2px 0}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{border-color:#55d9ff;box-shadow:0 0 12px #55d9ff22}
+h1,h2,h3,h4{color:#f0f7ff!important}p,label,.stCaption{color:#a9bdd1}
+[data-testid="stVerticalBlock"]{gap:.45rem}hr{border-color:#20394f}
+footer{visibility:hidden}
 </style>
 """,unsafe_allow_html=True)
 
@@ -178,6 +203,33 @@ def chart_theme(fig,height=235):
     fig.update_xaxes(gridcolor="#20354b",tickfont_color="#90a7bf",automargin=True)
     fig.update_yaxes(gridcolor="#20354b",tickfont_color="#90a7bf",automargin=True)
     return fig
+
+
+def make_network_figure(selected, sample):
+    nodes=[selected]
+    for node in sample.counterparty_id.tolist()+sample.device_id.tolist():
+        if node not in nodes: nodes.append(node)
+    nodes=nodes[:22]
+    angles=np.linspace(-np.pi/2,3*np.pi/2,len(nodes),endpoint=False)
+    pos={node:(float(np.cos(a)),float(np.sin(a))) for node,a in zip(nodes,angles)}
+    ex=[];ey=[];hx=[];hy=[]
+    for _,r in sample.iterrows():
+        target=r.counterparty_id if r.counterparty_id in pos else r.device_id
+        if target not in pos: continue
+        xx,yy=(hx,hy) if r.synthetic_scenario!="Baseline" else (ex,ey)
+        xx.extend([pos[selected][0],pos[target][0],None]); yy.extend([pos[selected][1],pos[target][1],None])
+    fig=go.Figure()
+    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=8,color="rgba(48,166,235,.10)"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=1.4,color="rgba(67,190,255,.78)"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=hx,y=hy,mode="lines",line=dict(width=10,color="rgba(255,137,48,.14)"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=hx,y=hy,mode="lines",line=dict(width=2.2,color="#ff963c"),hoverinfo="skip",showlegend=False))
+    xs=[pos[n][0] for n in nodes];ys=[pos[n][1] for n in nodes]
+    cs=["#ff9d3f" if n==selected else "#49d6ff" if n.startswith("CP") else "#91a9c2" for n in nodes]
+    sizes=[32 if n==selected else 17 for n in nodes]
+    fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers",marker=dict(size=[z+10 for z in sizes],color=cs,opacity=.12,line=dict(width=0)),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers+text",text=nodes,textposition="bottom center",textfont=dict(size=9,color="#dcecff"),marker=dict(size=sizes,color=cs,line=dict(width=1.4,color="#e9faff")),hovertemplate="<b>%{text}</b><extra>Linked entity</extra>",showlegend=False))
+    fig.update_layout(title=dict(text="ENTITY RELATIONSHIP INTELLIGENCE",font=dict(size=11,color="#7bdcff"),x=.02),xaxis=dict(visible=False,range=[-1.35,1.35]),yaxis=dict(visible=False,range=[-1.35,1.35],scaleanchor="x",scaleratio=1),margin=dict(l=3,r=3,t=32,b=20),height=440,showlegend=False)
+    return chart_theme(fig,440)
 
 def run_readonly_sql(query: str):
     if not query.strip():
@@ -228,24 +280,30 @@ st.markdown(f'<div class="hero"><div class="eyebrow">✦ {eyebrow}</div><h1>🛡
 # Pages
 # -------------------------------------------------------------------
 if page=="Command Center":
-    total_value=transactions["amount"].sum()
-    alert_customers=alerts["customer_id"].nunique() if len(alerts) else 0
+    total_value=transactions.amount.sum()
     k=st.columns(4)
-    for col,label,value in zip(k,["Transactions monitored","Transaction value","Alerts generated","Customers reviewed"],[f"{len(transactions):,}",money(total_value),f"{len(alerts):,}",f"{alert_customers:,}"]):
+    for col,label,value in zip(k,["Transactions monitored","Value monitored","Review signals","Entities in scope"],[f"{len(transactions):,}",money(total_value),f"{len(alerts):,}",f"{transactions.customer_id.nunique():,}"]):
         with col: st.metric(label,value)
-    left,right=st.columns([1.5,1])
+    left,center,right=st.columns([.78,2.1,.92],gap="small")
     with left:
-        daily=transactions.assign(day=transactions.transaction_ts.dt.date).groupby("day",as_index=False).agg(Transactions=("transaction_id","count"),Value=("amount","sum"))
-        fig=px.area(daily,x="day",y="Value",title="Transaction value over time",color_discrete_sequence=["#7664b7"])
-        fig.update_traces(line_width=2,fillcolor="rgba(118,100,183,.18)")
-        st.plotly_chart(chart_theme(fig,225),use_container_width=True)
+        st.markdown('<div class="panel"><div class="eyebrow">PRIORITY QUEUE</div><h4 style="margin:5px 0 8px">Suspicious activity</h4></div>',unsafe_allow_html=True)
+        for _,ar in alerts.sort_values("risk_score",ascending=False).head(7).iterrows():
+            color="#ff6878" if ar.severity=="High" else "#ffae50"
+            st.markdown(f'<div class="panel" style="padding:7px 8px;border-left:3px solid {color};margin-bottom:4px"><div style="font:9px IBM Plex Mono;color:{color}">{ar.alert_id} · {ar.severity.upper()}</div><div style="font-size:10px;color:#edf6ff;margin:3px 0">{ar.rule_name}</div><div style="font-size:9px;color:#91a9c0">{ar.customer_id} · ₹{ar.amount:,.0f}</div></div>',unsafe_allow_html=True)
+    with center:
+        st.markdown('<div class="eyebrow" style="margin:2px 0 4px">NETWORK INTELLIGENCE / RELATIONSHIP VIEW</div>',unsafe_allow_html=True)
+        focus="C0007" if "C0007" in transactions.customer_id.values else transactions.customer_id.iloc[0]
+        focus_rows=transactions[transactions.customer_id==focus].sort_values("transaction_ts",ascending=False).head(18)
+        st.plotly_chart(make_network_figure(focus,focus_rows),use_container_width=True,config={"displayModeBar":False})
+        st.markdown('<div style="font:8px IBM Plex Mono;color:#819ab3">● FOCAL CUSTOMER &nbsp; ━ CYAN: ROUTINE LINK &nbsp; ━ AMBER: SEEDED PATTERN</div>',unsafe_allow_html=True)
     with right:
-        sev=alerts.groupby("severity").size().reset_index(name="Alerts") if len(alerts) else pd.DataFrame(columns=["severity","Alerts"])
-        fig=px.pie(sev,names="severity",values="Alerts",hole=.58,title="Alert severity mix",color="severity",color_discrete_map={"High":"#d77c9d","Medium":"#e5b66c","Low":"#68b9b6"})
-        st.plotly_chart(chart_theme(fig,350),use_container_width=True)
-    st.subheader("Latest review signals")
-    st.dataframe(alerts[["alert_id","customer_id","rule_name","amount","severity","created_at"]].head(12) if len(alerts) else alerts,use_container_width=True,hide_index=True,height=180)
-    st.caption("A generated alert is a prompt for review, not a determination of misconduct.")
+        entity=customers[customers.customer_id==focus].iloc[0]
+        st.markdown(f'<div class="panel"><div class="eyebrow">FOCAL ENTITY</div><h3 style="margin:5px 0">{focus}</h3><div style="font-size:10px;color:#9ab1c8">{entity.customer_name}</div><div class="pill">{entity.customer_segment}</div><div class="pill">RISK {entity.risk_tier.upper()}</div></div>',unsafe_allow_html=True)
+        st.metric("Linked transactions",f"{len(focus_rows):,}")
+        st.metric("Value in view",money(focus_rows.amount.sum()))
+        st.metric("Counterparties",f"{focus_rows.counterparty_id.nunique():,}")
+        st.markdown('<div class="panel"><div class="eyebrow">SYSTEM STATUS</div><div style="color:#55d6ad;font-size:10px">● SQL ENGINE ONLINE</div><div style="color:#55d6ad;font-size:10px">● RULE MONITORING ACTIVE</div><div style="color:#55d6ad;font-size:10px">● ENTITY GRAPH READY</div></div>',unsafe_allow_html=True)
+    st.caption("Synthetic demonstration data. A review signal is not a finding of misconduct.")
 
 elif page=="Transaction Explorer":
     f1,f2,f3=st.columns(3)
@@ -284,43 +342,25 @@ HAVING COUNT(*) >= 3 AND SUM(amount) >= 20000;""",language="sql")
     st.caption("All thresholds are illustrative demo parameters, not regulatory thresholds.")
 
 elif page=="Network Map":
-    st.markdown("### Entity relationship investigation")
+    st.markdown('<div class="eyebrow">ENTITY RESOLUTION / CONNECTION ANALYSIS</div>',unsafe_allow_html=True)
     entity_ids=sorted(transactions.customer_id.unique())
     selected=st.selectbox("Focal customer entity",entity_ids,index=entity_ids.index("C0007") if "C0007" in entity_ids else 0)
     focal=transactions[transactions.customer_id==selected].sort_values("transaction_ts",ascending=False)
-    sample=focal.head(14)
-    nodes=[selected]
-    for node in sample.counterparty_id.tolist()+sample.device_id.tolist():
-        if node not in nodes: nodes.append(node)
-    nodes=nodes[:19]
-    angles=np.linspace(0,2*np.pi,len(nodes),endpoint=False)
-    positions={node:(float(np.cos(angle)),float(np.sin(angle))) for node,angle in zip(nodes,angles)}
-    ex=[];ey=[]
-    for _,record in sample.iterrows():
-        target=record.counterparty_id if record.counterparty_id in positions else record.device_id
-        if target in positions:
-            ex.extend([positions[selected][0],positions[target][0],None])
-            ey.extend([positions[selected][1],positions[target][1],None])
-    fig=go.Figure()
-    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=1.5,color="rgba(57,189,232,.55)"),hoverinfo="skip"))
-    nx=[positions[node][0] for node in nodes];ny=[positions[node][1] for node in nodes]
-    nc=["#f4a340" if node==selected else "#39bde8" if node.startswith("CP") else "#7287a1" for node in nodes]
-    fig.add_trace(go.Scatter(x=nx,y=ny,mode="markers+text",text=nodes,textposition="bottom center",textfont=dict(size=9,color="#dceafa"),marker=dict(size=[27 if node==selected else 15 for node in nodes],color=nc,line=dict(width=1.4,color="#dceafa")),hovertemplate="%{text}<extra>Linked entity</extra>"))
-    fig.update_layout(showlegend=False,xaxis=dict(visible=False),yaxis=dict(visible=False,scaleanchor="x",scaleratio=1),title="Counterparty and device connections")
-    left,right=st.columns([1.45,1],gap="small")
+    sample=focal.head(18)
+    left,right=st.columns([2.15,1],gap="small")
     with left:
-        st.plotly_chart(chart_theme(fig,330),use_container_width=True,config={"displayModeBar":False})
+        st.plotly_chart(make_network_figure(selected,sample),use_container_width=True,config={"displayModeBar":False})
+        st.caption("Cyan links show transaction relationships; amber links highlight seeded demonstration scenarios. Positions are schematic, not geographic.")
     with right:
         entity=customers[customers.customer_id==selected].iloc[0]
-        st.markdown(f'<div class="panel"><span class="pill">FOCAL ENTITY · {selected}</span><h3 style="margin:7px 0">{entity.customer_name}</h3><p style="color:#9db0c4;font-size:11px;margin:0">{entity.segment} · Home country {entity.home_country}</p><p style="color:#f4a340;font-size:12px;margin:9px 0 0">Risk tier · {entity.risk_tier}</p></div>',unsafe_allow_html=True)
-        a,b=st.columns(2)
-        a.metric("Transactions",f"{len(focal):,}")
-        b.metric("Total value",f"₹{focal.amount.sum():,.0f}")
-        a.metric("Distinct counterparties",f"{focal.counterparty_id.nunique():,}")
-        b.metric("Distinct devices",f"{focal.device_id.nunique():,}")
-        st.caption("Graph links are based on synthetic transaction co-occurrence, not verified ownership.")
-    st.markdown("**Recent linked activity**")
-    st.dataframe(sample[["transaction_id","transaction_ts","amount","counterparty_id","device_id","channel"]].head(6),use_container_width=True,hide_index=True,height=165)
+        st.markdown(f'<div class="panel"><div class="eyebrow">ENTITY PROFILE</div><h3 style="margin:5px 0">{entity.customer_name}</h3><div style="font:9px IBM Plex Mono;color:#8fa9c3">{selected} · {entity.customer_segment}</div><div class="pill">RISK {entity.risk_tier.upper()}</div><div class="pill">{entity.home_country}</div></div>',unsafe_allow_html=True)
+        st.metric("Transactions",f"{len(focal):,}")
+        st.metric("Total value",money(focal.amount.sum()))
+        st.metric("Counterparties",f"{focal.counterparty_id.nunique():,}")
+        st.metric("Devices",f"{focal.device_id.nunique():,}")
+        st.markdown('<div class="panel"><div class="eyebrow">LINK LEGEND</div><div style="color:#50cfff;font-size:10px">● Counterparty / routine link</div><div style="color:#ff9b3c;font-size:10px">● Seeded pattern / priority link</div><div style="color:#8ca7c3;font-size:10px">● Device node</div></div>',unsafe_allow_html=True)
+    st.markdown('<div class="eyebrow">RECENT LINKED ACTIVITY</div>',unsafe_allow_html=True)
+    st.dataframe(sample[["transaction_id","transaction_ts","amount","counterparty_id","device_id","channel"]].head(5),use_container_width=True,hide_index=True,height=150)
 
 elif page=="Investigation Desk":
     if "cases" not in st.session_state:
