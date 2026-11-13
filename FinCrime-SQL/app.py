@@ -190,6 +190,35 @@ html,body,[data-testid="stAppViewContainer"],.stApp{background:radial-gradient(e
 h1,h2,h3,h4{color:#f0f7ff!important}p,label,.stCaption{color:#a9bdd1}
 [data-testid="stVerticalBlock"]{gap:.45rem}hr{border-color:#20394f}
 footer{visibility:hidden}
+
+/* FUTURISTIC POLISH / MICRO-INTERACTIONS */
+:root{--fc-cyan:#62e0ff;--fc-blue:#398dff;--fc-amber:#ffad55;--fc-glass:rgba(12,29,48,.82)}
+.stApp{background-image:radial-gradient(ellipse at 12% 8%,rgba(42,112,176,.13),transparent 27%),radial-gradient(ellipse at 86% 72%,rgba(20,156,184,.10),transparent 30%),linear-gradient(135deg,#030812 0%,#071323 55%,#081a29 100%)!important}
+[data-testid="stMainBlockContainer"]{animation:fc-enter .55s ease-out both}
+@keyframes fc-enter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.hero{isolation:isolate;min-height:70px;background:linear-gradient(105deg,rgba(9,25,43,.98),rgba(12,39,60,.94) 62%,rgba(8,25,43,.98));border:1px solid rgba(91,203,244,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 32px rgba(34,160,214,.09),0 8px 26px rgba(0,0,0,.28),0 0 20px rgba(34,170,225,.07)}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 20%,rgba(85,213,255,.06) 48%,transparent 70%);background-size:220% 100%;animation:fc-sheen 9s ease-in-out infinite}
+@keyframes fc-sheen{0%,100%{background-position:120% 0}50%{background-position:-80% 0}}
+.hero:after{border-color:rgba(98,224,255,.42);box-shadow:0 0 0 13px rgba(98,224,255,.055),0 0 0 27px rgba(98,224,255,.035),0 0 34px rgba(70,194,255,.22);animation:fc-orbit 18s linear infinite,fc-breathe 4s ease-in-out infinite}
+@keyframes fc-orbit{to{transform:rotate(360deg)}}
+@keyframes fc-breathe{0%,100%{opacity:.58}50%{opacity:1}}
+.panel,.metric,[data-testid="stMetric"]{position:relative;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.panel:hover,.metric:hover,[data-testid="stMetric"]:hover{transform:translateY(-2px);border-color:rgba(98,224,255,.68)!important;box-shadow:inset 0 0 22px rgba(57,189,240,.08),0 9px 25px rgba(0,0,0,.30),0 0 17px rgba(57,189,240,.10)!important}
+[data-testid="stPlotlyChart"]{position:relative;overflow:hidden;border:1px solid rgba(69,151,194,.42);box-shadow:inset 0 0 26px rgba(45,161,215,.055),0 7px 22px rgba(0,0,0,.22),0 0 15px rgba(35,153,210,.07);transition:border-color .25s ease,box-shadow .25s ease}
+[data-testid="stPlotlyChart"]:hover{border-color:rgba(98,224,255,.72);box-shadow:inset 0 0 28px rgba(45,180,235,.08),0 8px 26px rgba(0,0,0,.28),0 0 22px rgba(45,180,235,.13)}
+[data-testid="stPlotlyChart"] svg .scatterlayer path.js-line{filter:drop-shadow(0 0 3px rgba(68,197,255,.55))}
+[data-testid="stPlotlyChart"] svg .scatterlayer .point{filter:drop-shadow(0 0 4px rgba(74,201,255,.42))}
+[data-testid="stSidebar"] [data-testid="stRadio"] label{transition:all .18s ease}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{transform:translateX(3px);background:linear-gradient(90deg,#102d45,#0b2033)}
+.stButton button,.stDownloadButton button{transition:all .18s ease;box-shadow:0 3px 10px rgba(0,0,0,.16)}
+.stButton button:hover,.stDownloadButton button:hover{transform:translateY(-1px);border-color:#62e0ff!important;box-shadow:0 0 15px rgba(76,205,255,.18)}
+[data-testid="stDataFrame"]{box-shadow:0 6px 18px rgba(0,0,0,.16)}
+[data-testid="stDataFrame"] th{font-size:11px!important;letter-spacing:.025em}
+[data-testid="stDataFrame"] td{font-size:11px!important}
+h1,h2,h3,h4{letter-spacing:-.035em}
+h2{font-size:1.22rem!important}h3{font-size:1.02rem!important}
+.stCaption{font-size:10px!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 """,unsafe_allow_html=True)
 
@@ -198,8 +227,9 @@ def money(v):
 
 def chart_theme(fig,height=235):
     fig.update_layout(template="plotly_dark",paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Manrope",color="#a9bbcf",size=10),margin=dict(l=14,r=14,t=32,b=24),height=height,
-        legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9)),hoverlabel=dict(bgcolor="#13253a",font_color="#f3f7fc"))
+        font=dict(family="Manrope",color="#b8cbe0",size=10),margin=dict(l=14,r=14,t=32,b=24),height=height,
+        legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9)),hoverlabel=dict(bgcolor="#10263b",font_color="#f3f8ff"),
+        transition=dict(duration=550,easing="cubic-in-out"),uirevision="fincrime-visual")
     fig.update_xaxes(gridcolor="#20354b",tickfont_color="#90a7bf",automargin=True)
     fig.update_yaxes(gridcolor="#20354b",tickfont_color="#90a7bf",automargin=True)
     return fig
