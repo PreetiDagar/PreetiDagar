@@ -47,7 +47,7 @@ I’m continuously strengthening my skills through hands-on projects, experiment
 | Project | What it explores |
 |---|---|
 | [Personal Portfolio](https://github.com/PreetiDagar/Portfolio) | A React-based portfolio website showcasing projects and work. |
-| [Ride Cancellation Early-Warning Model](https://github.com/PreetiDagar) | Applied project in progress: predicting ride booking outcomes and presenting insights through an interactive dashboard. |
+| [RideGuard AI](https://github.com/PreetiDagar/PreetiDagar/tree/main/RideGuard-AI) · [Live Demo](https://preetidagar-z56jn3rqwqy2okw2klzfvj.streamlit.app/) | End-to-end mobility risk intelligence app with booking-outcome ML, route analysis, scenario simulation and model diagnostics. |
 
 ### AI & Machine Learning
 
