@@ -127,9 +127,6 @@ except ValueError as exc:
     st.error(str(exc))
     st.stop()
 
-if synthetic:
-    # Synthetic demo data disclosure remains in README; hide the in-app alert.
-
 min_class = int(y.value_counts().min()) if not y.empty else 0
 if len(y) < 30 or y.nunique() < 2 or min_class < 2:
     st.error("This dataset does not contain enough labelled booking outcomes to train a reliable demonstration model.")
@@ -344,7 +341,7 @@ div[data-testid="stFileUploaderDropzone"] {{background:{PALETTE['panel2']}; bord
 div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {{border-radius:10px; background:{PALETTE['panel2']};}}
 [data-testid="stDataFrame"], [data-testid="stTable"] {{border:1px solid {PALETTE['border']}; border-radius:12px; overflow:hidden;}}
 .hero {{position:relative; overflow:hidden; padding:clamp(1rem,2vw,1.65rem) clamp(1rem,2.3vw,2rem); border:1px solid {PALETTE['border']}; border-radius:20px;
-background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30%),linear-gradient(120deg,#14223B,#111A2D 65%,#132A38); margin-bottom:1rem;}}
+background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30%),linear-gradient(120deg,{PALETTE["panel2"]},{PALETTE["panel"]} 65%,{PALETTE["bg"]}); margin-bottom:1rem;}}
 .hero::after {{content:"";position:absolute;z-index:-1;width:210px;height:210px;right:-50px;top:-95px;border-radius:50%;background:radial-gradient(circle,rgba(53,208,186,.22),transparent 70%);animation:rgFloat 9s ease-in-out infinite alternate;}}
 @keyframes rgFloat {{from {{transform:translate(0,0) scale(.9);}} to {{transform:translate(-16px,18px) scale(1.12);}}}}
 @keyframes rgEnter {{from {{opacity:0;transform:translateY(8px);}} to {{opacity:1;transform:translateY(0);}}}}
