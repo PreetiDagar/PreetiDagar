@@ -1,29 +1,81 @@
-[![MasterHead](https://camo.githubusercontent.com/29fd3dc9175d5bac42f835146c1f7fcafe97ce20212b79f124b3492a40d04e12/68747470733a2f2f63646e2e686173686e6f64652e636f6d2f7265732f686173686e6f64652f696d6167652f75706c6f61642f76313634383635373530363230362f445254314c7a6e4e4c2e6769663f773d3136303026683d383430266669743d63726f702663726f703d656e74726f7079266175746f3d666f726d61742c636f6d7072657373266769662d713d363026666f726d61743d7765626d)
-<h1 align="center">Hi 👋, I'm Preeti Dagar</h1>
-<h3 align="center">A passionate Fullstack developer from India</h3>
-<img align="right" alt="coding" width="400" src="https://user-images.githubusercontent.com/55389276/140866485-8fb1c876-9a8f-4d6a-98dc-08c4981eaf70.gif">
+<!-- PROFILE README | Preeti Dagar -->
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=preetidagar&label=Profile%20views&color=0e75b6&style=flat" alt="preetidagar" /> </p>
+<div align="center">
 
-- 🌱 I’m currently learning **Ruby on Rails**
+# Preeti Dagar
 
-- 👨‍💻 Please feel free to explore my portfolio [https://meek-mermaid-723af2.netlify.app/#project](https://meek-mermaid-723af2.netlify.app/#project)
+### Data Analytics • Machine Learning • AI Engineering
 
-- 💬 Ask me about **React,MERN**
+**Turning data into decisions. Building intelligent, practical solutions.**
 
-- 📫 How to reach me **dagarp72@gmail.com**
+[![GitHub](https://img.shields.io/badge/GitHub-PreetiDagar-181717?style=for-the-badge&logo=github)](https://github.com/PreetiDagar)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-5B6EE1?style=for-the-badge&logo=google-chrome&logoColor=white)](https://meek-mermaid-723af2.netlify.app/)
+[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:dagarp72@gmail.com)
 
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-<a href="https://www.codechef.com/users/dagarp72" target="blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.1.0/icons/codechef.svg" alt="https://www.codechef.com/users/dagarp72" height="30" width="40" /></a>
-<a href="https://auth.geeksforgeeks.org/user/https://auth.geeksforgeeks.org/user/dagarp72/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/geeks-for-geeks.svg" alt="https://auth.geeksforgeeks.org/user/dagarp72/" height="30" width="40" /></a>
-</p>
+</div>
 
-<h3 align="left">Languages and Tools:</h3>
-<p align="left"> <a href="https://angular.io" target="_blank" rel="noreferrer"> <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="angular" width="40" height="40"/> </a> <a href="https://angular.io" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original-wordmark.svg" alt="angularjs" width="40" height="40"/> </a> <a href="https://aws.amazon.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="aws" width="40" height="40"/> </a> <a href="https://getbootstrap.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/> </a> <a href="https://canvasjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/Hardik0307/Hardik0307/master/assets/canvasjs-charts.svg" alt="canvasjs" width="40" height="40"/> </a> <a href="https://www.w3schools.com/cpp/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://www.figma.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="40" height="40"/> </a> <a href="https://firebase.google.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="40" height="40"/> </a> <a href="https://flutter.dev" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg" alt="flutter" width="40" height="40"/> </a> <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.linux.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="linux" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://www.microsoft.com/en-us/sql-server" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="mssql" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://www.postgresql.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a> <a href="https://reactnative.dev/" target="_blank" rel="noreferrer"> <img src="https://reactnative.dev/img/header_logo.svg" alt="reactnative" width="40" height="40"/> </a> <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/> </a> <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/> </a> </p>
+---
 
-<p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=preetidagar&show_icons=true&locale=en&layout=compact" alt="preetidagar" /></p>
+## About
 
-<p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=preetidagar&show_icons=true&locale=en" alt="preetidagar" /></p>
+I’m an MBA candidate focused on **Business Analytics**, with a technology background and a strong interest in using data and AI to solve real-world problems.
 
-<p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=preetidagar&" alt="preetidagar" /></p>
+I enjoy working across the analytics lifecycle — from collecting and preparing data to exploratory analysis, predictive modelling, visualization, and communicating actionable findings.
+
+My interests span two connected areas:
+
+- **Data Analytics & Business Intelligence:** uncovering patterns, measuring performance, and translating analysis into business recommendations.
+- **AI & Machine Learning:** developing predictive models and practical intelligent applications using Python and machine-learning techniques.
+
+I’m continuously strengthening my skills through hands-on projects, experimentation, and applied learning.
+
+## Technical Skills
+
+| Area | Tools & Technologies |
+|---|---|
+| Programming & Data | Python, SQL, R |
+| Data Analysis | Pandas, NumPy, Excel, exploratory data analysis |
+| Visualization & BI | Power BI, DAX, Matplotlib |
+| Machine Learning | Scikit-learn, regression, classification, model evaluation |
+| AI Applications | NLP, sentiment analysis, computer vision fundamentals |
+| Deployment & Workflow | Streamlit, Git, GitHub, Google Colab |
+
+## Featured Projects
+
+### Data Analytics & Business Intelligence
+
+| Project | What it explores |
+|---|---|
+| [Personal Portfolio](https://github.com/PreetiDagar/Portfolio) | A React-based portfolio website showcasing projects and work. |
+| [Ride Cancellation Early-Warning Model](https://github.com/PreetiDagar) | Applied project in progress: predicting ride booking outcomes and presenting insights through an interactive dashboard. |
+
+### AI & Machine Learning
+
+| Project | What it explores |
+|---|---|
+| [Image Caption Generator](https://github.com/PreetiDagar/Image-Caption-Generator) | Deep learning and computer vision to generate natural-language descriptions of images. |
+| [Hologram with Speech Synthesis](https://github.com/PreetiDagar/Hologram-with-Speech-Synthesis) | An interactive concept combining a hologram experience and speech synthesis. |
+| [Resume Parser](https://github.com/PreetiDagar/Resume-Parser) | Repository reserved for a resume-parsing project; implementation and documentation are being developed. |
+
+> Project descriptions reflect the current repository information. I’m working to add clearer documentation, reproducible steps, results, and demonstrations as each project is refined.
+
+## What I’m Working On
+
+- Building end-to-end data analytics projects with clear business recommendations.
+- Practising predictive modelling and evaluating machine-learning performance.
+- Exploring NLP, sentiment analysis, and practical AI applications.
+- Developing interactive dashboards with Python and Power BI.
+
+## Connect
+
+- **Email:** [dagarp72@gmail.com](mailto:dagarp72@gmail.com)
+- **Portfolio:** [meek-mermaid-723af2.netlify.app](https://meek-mermaid-723af2.netlify.app/)
+- **GitHub:** [@PreetiDagar](https://github.com/PreetiDagar)
+
+---
+
+<div align="center">
+
+*Always learning. Always building. Driven by data and curiosity.*
+
+</div>
