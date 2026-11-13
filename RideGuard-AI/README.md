@@ -1,7 +1,7 @@
 # RideGuard AI 🚕
 ### Mobility Risk & Operations Intelligence
 
-RideGuard AI is an end-to-end machine-learning portfolio application built around the NCR ride-booking analytics work. It combines booking-outcome prediction, route-level risk analysis, model diagnostics and an interactive scenario simulator.
+RideGuard AI is an end-to-end machine-learning portfolio application built around the NCR ride-booking analytics work. It combines booking-outcome prediction, route-level risk analysis, model diagnostics and an interactive scenario simulator.\n\n**[Launch the live application](https://preetidagar-z56jn3rqwqy2okw2klzfvj.streamlit.app/)**
 
 > **Demo data notice:** The built-in demo dataset is synthetically generated for demonstration. It is not real NCR ride-booking history. Upload the original ride-booking CSV to analyse your actual data.
 
