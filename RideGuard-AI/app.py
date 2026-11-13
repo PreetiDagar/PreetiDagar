@@ -395,9 +395,7 @@ elif page == "Route Intelligence":
         st.download_button("Download corridor risk summary",summary.to_csv(index=False).encode(),
                            "rideguard_corridor_summary.csv","text/csv")
     st.caption("Rates from small samples are unstable. Use the booking threshold before comparing corridors.")
-else:
-    st.warning("Pickup and drop columns were not detected.")
- 
+
 elif page == "Model Diagnostics":
     st.subheader("Model quality & explainability")
     m1,m2,m3 = st.columns(3)
