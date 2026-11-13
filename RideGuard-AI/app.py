@@ -183,8 +183,8 @@ failure_rate = float(failed_actual.mean() * 100)
 completion_rate = float((y == "Completed").mean() * 100)
 routes_df = source_df.copy()
 routes_df["_target"] = y.values
-pickup_col = next((c for c in routes_df.columns if c.lower().strip() in {"pickup location", "pickup"}), None)
-drop_col = next((c for c in routes_df.columns if c.lower().strip() in {"drop location", "destination"}), None)
+pickup_col = next((c for c in routes_df.columns if c.lower().strip() in {"pickup location", "pickup"}), next((c for c in routes_df.columns if "pickup" in c.lower()), None))
+drop_col = next((c for c in routes_df.columns if c.lower().strip() in {"drop location", "destination"}), next((c for c in routes_df.columns if "drop" in c.lower() or "destination" in c.lower()), None))
 
 show_header()
 if page == "Command Center":
@@ -269,7 +269,7 @@ elif page == "Risk Lab":
         st.info("Submit a booking scenario to see the predicted outcome distribution.")
 
 elif page == "Route Intelligence":
-    st.subheader("Live mobility network")
+    st.subheader("Mobility network map")
     st.caption("Explore demand corridors and historical unsuccessful-outcome signals across your ride network.")
 
     # Approximate NCR area centroids for the built-in demo. Uploaded GPS columns take priority.
