@@ -83,8 +83,13 @@ with st.sidebar:
             for q in range(1,22):
                 found=next((normalized[k] for k in [f"q{q}",f"question{q}",f"item{q}",f"likert{q}"] if k in normalized),None)
                 if found is not None: defaults.append(found)
+            # Google Forms exports often use full question text as headers.
+            # If exactly 21 numeric columns exist, preserve their left-to-right order.
+            if len(defaults)!=21:
+                numeric_defaults=raw.select_dtypes(include="number").columns.tolist()
+                if len(numeric_defaults)==21: defaults=numeric_defaults
             selected=st.multiselect("Select 21 item columns in questionnaire order",list(raw.columns),default=defaults,
-                help="Order: Q1–3 Online Value; Q4–6 Physical Store Value; Q7–11 AR Quality; Q12–14 Risk Reduction; Q15–18 Omnichannel; Q19–21 Purchase Intention.")
+                help="Order: Q1–3 Online Value; Q4–6 Physical Store Value; Q7–11 AR Quality; Q12–14 Risk Reduction; Q15–18 Omnichannel; Q19–21 Purchase Intention. Google Forms exports with 21 numeric Likert columns are auto-mapped.")
             mapping={q+1:selected[q] for q in range(min(21,len(selected)))}
             demo=False
             st.success(f"{len(raw):,} rows loaded")
@@ -137,7 +142,7 @@ for q,col in mapping.items():
 data=score_data(raw,mapping)
 names=list(CONSTRUCTS)
 means=data[names].mean()
-journey_col=next((c for c in data.columns if str(c).strip().lower() in ["shopping journey","channel behaviour","channel behavior","journey type"]),None)
+journey_col=next((c for c in data.columns if str(c).strip().lower() in ["shopping journey","channel behaviour","channel behavior","journey type"] or "shopping method" in str(c).strip().lower()),None)
 category_col=next((c for c in data.columns if "category" in str(c).lower()),None)
 ar_col=next((c for c in data.columns if str(c).strip().lower() in ["ar usage","used ar","ar experience"]),None)
 if demo: st.caption("DEMO DATA · Synthetic illustrative responses only; not original research respondents.")
