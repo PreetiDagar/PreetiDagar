@@ -225,6 +225,7 @@ def chart_theme(fig,height=235):
     fig.update_layout(template="plotly_dark",paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="DM Sans",color="#eadcf4",size=10),margin=dict(l=14,r=14,t=30,b=22),height=height,
         legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9,color="#d9c5e8")),
+        colorway=["#bd78ff","#ec79c8","#f2b96f","#8c83ff","#78c9e8","#d6a0ff"],
         hoverlabel=dict(bgcolor="#29133a",bordercolor="#c66bff",font_color="#fff4ff"),
         transition=dict(duration=450,easing="cubic-in-out"),uirevision="fincrime-cosmic")
     fig.update_xaxes(gridcolor="rgba(190,130,220,.16)",zerolinecolor="rgba(190,130,220,.18)",tickfont_color="#cbb6dc",automargin=True)
