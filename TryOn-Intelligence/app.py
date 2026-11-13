@@ -4,6 +4,14 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.stats.diagnostic import het_breuschpagan
+from scipy import stats
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
 
 st.set_page_config(page_title="TryOn Intelligence | AR Shopping Analytics", page_icon="🪞", layout="wide", initial_sidebar_state="expanded")
 
@@ -97,7 +105,7 @@ with st.sidebar:
             st.error(f"File could not be read: {exc}")
             raw=pd.DataFrame(); mapping={}; demo=False
     st.markdown("---")
-    page=st.radio("NAVIGATION",["Executive Overview","AR Experience Lab","Omnichannel Journey","Customer Insights","Strategy Simulator","Data Studio"])
+    page=st.radio("NAVIGATION",["Executive Overview","AR Experience Lab","Omnichannel Journey","Customer Insights","Research Analytics","Customer Segmentation","Strategy Simulator","Data Studio"])
     st.markdown("---")
     st.caption("6 constructs · 21 Likert items · S-O-R + Dual-Factor lens")
 
@@ -238,6 +246,8 @@ PAGE_COPY = {
     "AR Experience Lab": ("EXPERIENCE QUALITY / STIMULUS", "✦ AR Experience Lab", "Explore the five experience dimensions shaping how shoppers evaluate virtual try-on."),
     "Omnichannel Journey": ("CHANNEL INTELLIGENCE / BEHAVIOUR", "↗ Omnichannel Journey", "Understand webrooming, showrooming and the connections between digital and physical retail."),
     "Customer Insights": ("SEGMENTATION / CUSTOMER SIGNALS", "◎ Customer Insights", "Compare customer groups and discover relationships between the six research constructs."),
+    "Research Analytics": ("INFERENCE / HYPOTHESIS TESTING", "⌘ Research Analytics", "Test the nine proposed relationships, estimate regression effects and inspect model assumptions."),
+    "Customer Segmentation": ("UNSUPERVISED LEARNING / PERSONAS", "◈ Customer Segmentation", "Discover exploratory respondent profiles from the six measured constructs."),
     "Strategy Simulator": ("SCENARIO PLANNING / WHAT-IF", "⌁ Strategy Simulator", "Explore transparent improvement scenarios for AR experience and purchase intention."),
     "Data Studio": ("DATA QUALITY / MEASUREMENT", "▦ Data Studio", "Inspect response completeness, construct reliability and respondent-level scores.")
 }
@@ -345,6 +355,108 @@ elif page=="Customer Insights":
     else: st.info("Add Product Category, AR Usage or Shopping Journey to compare customer groups.")
     st.markdown("#### Construct relationship explorer")
     st.plotly_chart(theme_chart(px.imshow(data[names].corr(),text_auto=".2f",zmin=-1,zmax=1,color_continuous_scale="RdBu_r",aspect="auto")),use_container_width=True)
+
+elif page=="Research Analytics":
+    st.subheader("Research analytics & hypothesis testing")
+    st.caption("Exploratory inference using your six questionnaire constructs. Results describe associations, not causal effects.")
+    hypotheses = [
+        ("H1","Online Shopping Value","Purchase Intention"),
+        ("H2","Physical Store Value","Purchase Intention"),
+        ("H3","AR Experience Quality","Purchase Intention"),
+        ("H4","AR Experience Quality","AR-Enabled Risk Reduction"),
+        ("H5","AR-Enabled Risk Reduction","Purchase Intention"),
+        ("H6","AR Experience Quality","Online Shopping Value"),
+        ("H7","AR Experience Quality","Omnichannel Behaviour"),
+        ("H8","AR-Enabled Risk Reduction","Omnichannel Behaviour"),
+        ("H9","Omnichannel Behaviour","Purchase Intention"),
+    ]
+    st.markdown("#### Hypothesis testing")
+    alpha_level=st.select_slider("Significance level (α)",options=[0.01,0.05,0.10],value=0.05,format_func=lambda x:f"{x:.2f}")
+    rows=[]
+    for h,x,y in hypotheses:
+        pair=data[[x,y]].dropna()
+        if len(pair)>=4 and pair[x].nunique()>1 and pair[y].nunique()>1:
+            pearson_r,pearson_p=stats.pearsonr(pair[x],pair[y])
+            spear_r,spear_p=stats.spearmanr(pair[x],pair[y])
+            rows.append({"Hypothesis":h,"Relationship":f"{x} → {y}","N":len(pair),"Pearson r":pearson_r,"p-value":pearson_p,"Spearman ρ":spear_r,"Decision":"Supported" if pearson_p<alpha_level else "Not supported"})
+        else:
+            rows.append({"Hypothesis":h,"Relationship":f"{x} → {y}","N":len(pair),"Pearson r":np.nan,"p-value":np.nan,"Spearman ρ":np.nan,"Decision":"Insufficient variation"})
+    hdf=pd.DataFrame(rows)
+    st.dataframe(hdf,use_container_width=True,hide_index=True,column_config={"Pearson r":st.column_config.NumberColumn(format="%.3f"),"p-value":st.column_config.NumberColumn(format="%.4f"),"Spearman ρ":st.column_config.NumberColumn(format="%.3f")})
+    st.caption("Pearson tests linear association; Spearman provides a rank-based sensitivity check. The decision column uses the selected unadjusted α. Consider multiple-testing correction before strong claims.")
+    st.download_button("Download hypothesis results",hdf.to_csv(index=False).encode("utf-8"),"tryon_hypothesis_tests.csv","text/csv")
+    st.markdown("#### Multiple regression model")
+    st.write("Outcome: Purchase Intention · Predictors: the other five constructs.")
+    predictors=["Online Shopping Value","Physical Store Value","AR Experience Quality","AR-Enabled Risk Reduction","Omnichannel Behaviour"]
+    model_df=data[predictors+["Purchase Intention"]].dropna()
+    if len(model_df)>len(predictors)+3:
+        X=sm.add_constant(model_df[predictors])
+        fit=sm.OLS(model_df["Purchase Intention"],X).fit()
+        ci=fit.conf_int()
+        coef=pd.DataFrame({"Predictor":fit.params.index,"Coefficient":fit.params.values,"Std. error":fit.bse.values,"p-value":fit.pvalues.values,"CI lower":ci[0].values,"CI upper":ci[1].values})
+        m1,m2,m3,m4=st.columns(4)
+        m1.metric("Observations",f"{int(fit.nobs)}")
+        m2.metric("R²",f"{fit.rsquared:.3f}")
+        m3.metric("Adjusted R²",f"{fit.rsquared_adj:.3f}")
+        m4.metric("Model p-value",f"{fit.f_pvalue:.4f}" if fit.f_pvalue is not None else "N/A")
+        st.dataframe(coef.iloc[1:],use_container_width=True,hide_index=True,column_config={c:st.column_config.NumberColumn(format="%.4f") for c in ["Coefficient","Std. error","p-value","CI lower","CI upper"]})
+        st.markdown("#### Regression diagnostics")
+        residuals=fit.resid
+        shapiro_p=stats.shapiro(residuals).pvalue if len(residuals)>=3 else np.nan
+        try: bp_p=het_breuschpagan(residuals,fit.model.exog)[1]
+        except Exception: bp_p=np.nan
+        vif=[]
+        for i,col in enumerate(predictors):
+            try: vif.append({"Predictor":col,"VIF":variance_inflation_factor(model_df[predictors].astype(float).values,i)})
+            except Exception: vif.append({"Predictor":col,"VIF":np.nan})
+        d1,d2,d3=st.columns(3)
+        d1.metric("Shapiro-Wilk p",f"{shapiro_p:.4f}" if pd.notna(shapiro_p) else "N/A")
+        d2.metric("Breusch-Pagan p",f"{bp_p:.4f}" if pd.notna(bp_p) else "N/A")
+        d3.metric("Durbin-Watson",f"{sm.stats.stattools.durbin_watson(residuals):.3f}")
+        with st.expander("View multicollinearity (VIF)"):
+            st.dataframe(pd.DataFrame(vif),use_container_width=True,hide_index=True)
+        diag_fig=px.scatter(x=fit.fittedvalues,y=residuals,labels={"x":"Fitted values","y":"Residuals"},title="Residuals versus fitted values")
+        diag_fig.add_hline(y=0,line_dash="dash",line_color="#E879A5")
+        st.plotly_chart(theme_chart(diag_fig),use_container_width=True)
+        st.download_button("Download regression summary",coef.to_csv(index=False).encode("utf-8"),"tryon_regression_coefficients.csv","text/csv")
+        st.caption("Small convenience sample (N≈70): treat coefficients and diagnostics as exploratory. Likert composites are treated as approximately continuous; this modelling choice should be disclosed.")
+    else:
+        st.warning("Not enough complete observations to estimate the regression with the selected data.")
+
+elif page=="Customer Segmentation":
+    st.subheader("Exploratory customer segmentation")
+    st.caption("K-means clustering on standardized construct scores. Segments are statistical profiles, not verified market personas.")
+    k=st.slider("Number of segments",2,5,3)
+    cluster_data=data[names].dropna()
+    if len(cluster_data)>k+2:
+        scaler=StandardScaler()
+        scaled=scaler.fit_transform(cluster_data)
+        km=KMeans(n_clusters=k,random_state=42,n_init=20)
+        labels=km.fit_predict(scaled)
+        sil=silhouette_score(scaled,labels) if len(np.unique(labels))>1 and len(cluster_data)>k else np.nan
+        p1,p2,p3=st.columns(3)
+        p1.metric("Respondents clustered",f"{len(cluster_data):,}")
+        p2.metric("Segments",str(k))
+        p3.metric("Silhouette score",f"{sil:.3f}" if pd.notna(sil) else "N/A")
+        pca=PCA(n_components=2)
+        coords=pca.fit_transform(scaled)
+        plot_df=pd.DataFrame({"PC1":coords[:,0],"PC2":coords[:,1],"Segment":pd.Series(labels,index=cluster_data.index).map(lambda x:f"Segment {x+1}")})
+        fig=px.scatter(plot_df,x="PC1",y="PC2",color="Segment",opacity=.82,color_discrete_sequence=["#8B7CFF","#23C6A8","#E879A5","#4EA5FF","#F4B860"],title="Respondent map (PCA projection)")
+        st.plotly_chart(theme_chart(fig),use_container_width=True)
+        prof=cluster_data.assign(Segment=[f"Segment {x+1}" for x in labels]).groupby("Segment")[names].mean().round(2)
+        sizes=prof.copy()
+        sizes.insert(0,"Respondents",pd.Series(labels).value_counts().sort_index().values)
+        st.markdown("#### Segment profiles")
+        st.dataframe(sizes,use_container_width=True)
+        long=prof.reset_index().melt(id_vars="Segment",var_name="Construct",value_name="Mean score")
+        fig=px.line_polar(long,r="Mean score",theta="Construct",color="Segment",line_close=True,color_discrete_sequence=["#8B7CFF","#23C6A8","#E879A5","#4EA5FF","#F4B860"])
+        fig.update_layout(polar=dict(radialaxis=dict(range=[0,5],showticklabels=True)))
+        st.plotly_chart(theme_chart(fig),use_container_width=True)
+        export=cluster_data.copy()
+        export["Segment"]=[f"Segment {x+1}" for x in labels]
+        st.download_button("Download respondent segment assignments",export.to_csv(index=True).encode("utf-8"),"tryon_customer_segments.csv","text/csv")
+    else:
+        st.warning("Not enough complete responses for the selected number of segments.")
 
 elif page=="Strategy Simulator":
     st.subheader("Retail strategy simulator")
