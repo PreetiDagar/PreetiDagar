@@ -171,7 +171,20 @@ p,li,label,.stCaption{color:#d0bddc}
 .fc-alert-meta{font:8px 'Space Mono';color:#b9a1ca}.fc-alert-tag{font:8px 'Space Mono';font-weight:700;letter-spacing:.04em;padding:3px 5px;border-radius:5px;background:#48203e;color:#ff9bd7}.fc-alert-tag.medium{background:#49301e;color:#ffd08d}
 .fc-focus{background:linear-gradient(145deg,rgba(41,21,58,.97),rgba(18,12,31,.98));border:1px solid #603a77;border-radius:10px;padding:10px 11px;margin-bottom:6px}
 .fc-focus-name{font-size:17px;font-weight:800;color:#fff3ff;margin:5px 0}.fc-status{font:9px 'Space Mono';color:#d18aff;line-height:1.9}
-[data-testid="stVerticalBlock"]{gap:.45rem}hr{border-color:#4a2e60!important}footer{visibility:hidden}
+/* Prevent Streamlit cards, badges and chart containers from colliding */
+.fc-focus{display:flow-root;min-height:94px;overflow:visible;margin:0 0 12px;padding:12px 13px}
+.fc-focus .pill{display:inline-flex;align-items:center;line-height:1.45;margin:8px 5px 3px 0;white-space:normal}
+[data-testid="stMetric"]{position:relative;z-index:1;box-sizing:border-box;min-height:76px;height:auto;overflow:visible;margin:4px 0 10px;padding:10px 12px!important}
+[data-testid="stMetricLabel"]{min-height:15px;overflow:visible}
+[data-testid="stMetricLabel"] p{line-height:1.35!important;white-space:normal!important;overflow-wrap:anywhere}
+[data-testid="stMetricValue"]{line-height:1.3!important;white-space:normal!important;overflow-wrap:anywhere}
+[data-testid="stPlotlyChart"]{position:relative;z-index:0;overflow:hidden;margin:8px 0 14px}
+[data-testid="stDataFrame"]{position:relative;z-index:0;margin:8px 0 14px;min-height:120px}
+[data-testid="stVerticalBlock"]{gap:.65rem}
+[data-testid="stAlert"][data-baseweb="notification"]{background:linear-gradient(120deg,rgba(77,37,104,.95),rgba(42,31,86,.95))!important;border:1px solid #9d63c5!important;color:#f6eaff!important}
+[data-testid="stAlert"] p,[data-testid="stAlert"] div{color:#f6eaff!important}
+[data-testid="stAlert"] svg{fill:#d28cff!important;color:#d28cff!important}
+hr{border-color:#4a2e60!important}footer{visibility:hidden}
 @media(max-width:1100px){.block-container{padding:.4rem .5rem!important}.fc-queue{height:350px}.fc-alert-row{min-height:43px}.hero h1{font-size:21px!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -309,7 +322,7 @@ elif page=="Detection Lab":
     st.markdown("### Detection rules and explainability")
     rule_counts=alerts.groupby(["rule_name","severity"]).size().reset_index(name="Alert count")
     if len(rule_counts):
-        fig=px.bar(rule_counts,x="rule_name",y="Alert count",color="severity",barmode="stack",title="Alert volume by rule",color_discrete_map={"High":"#d77c9d","Medium":"#e5b66c","Low":"#68b9b6"})
+        fig=px.bar(rule_counts,x="rule_name",y="Alert count",color="severity",barmode="stack",title="Alert volume by rule",color_discrete_map={"High":"#ed75b5","Medium":"#f0bd78","Low":"#ad8cff"})
         st.plotly_chart(chart_theme(fig,350),use_container_width=True)
     st.dataframe(alerts.sort_values("risk_score",ascending=False),use_container_width=True,hide_index=True)
     with st.expander("View SQL rule examples"):
