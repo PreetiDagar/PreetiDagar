@@ -310,7 +310,10 @@ elif page == "Data Explorer":
                        "rideguard_cleaned_bookings.csv","text/csv")
 
 st.markdown("---")
-st.markdown('<div class="small-muted">RideGuard AI · Built by Preeti Dagar · Portfolio demonstration. Predictions are estimates, not operational guarantees.</div>',unsafe_allow_html=True)st.markdown(f"""
+st.markdown('<div class="small-muted">RideGuard AI · Built by Preeti Dagar · Portfolio demonstration. Predictions are estimates, not operational guarantees.</div>',unsafe_allow_html=True)
+
+# Responsive styling overrides
+st.markdown(f"""
 <style>
 :root {{ color-scheme: dark; }}
 .stApp {{background:{PALETTE['bg']}; color:{PALETTE['text']};}}
