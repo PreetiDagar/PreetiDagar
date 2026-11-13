@@ -209,35 +209,44 @@ hr {{border-color:{C['border']};opacity:.8;}}
 @media(max-width:720px) {{.hero-orbit {{width:84px;height:84px;right:16px;top:22px;transform:none;opacity:.45}}.hero {{padding-right:90px}}.hero-tags span {{font-size:.62rem}}}}
 @media(max-height:800px) and (min-width:900px) {{.hero {{min-height:0;padding:20px 26px;margin-bottom:16px}}.hero h1 {{font-size:2.2rem}}.hero-orbit {{width:112px;height:112px}}}}
 
-/* Lumina-inspired purple / aqua / rose glassmorphism finish */
+/* Complementary lavender / aqua / rose glass interface — no pure-black panels */
 .stApp {{background:
- radial-gradient(ellipse at 9% 5%,rgba(196,91,239,.72),transparent 37%),
- radial-gradient(ellipse at 91% 7%,rgba(27,190,224,.66),transparent 38%),
- radial-gradient(ellipse at 91% 88%,rgba(235,108,191,.48),transparent 32%),
- radial-gradient(ellipse at 8% 100%,rgba(35,60,158,.65),transparent 42%),
- linear-gradient(135deg,#211b68 0%,#5143a0 43%,#147eaf 100%);}}
-.stApp:before {{opacity:.10;background-size:54px 54px;}}
-[data-testid="stSidebar"] {{background:linear-gradient(160deg,rgba(255,255,255,.19),rgba(46,36,116,.48))!important;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-right:1px solid rgba(255,255,255,.35)!important;box-shadow:12px 0 42px rgba(20,18,70,.16);}}
+ radial-gradient(ellipse at 8% 4%,rgba(198,139,255,.46),transparent 36%),
+ radial-gradient(ellipse at 92% 8%,rgba(87,214,231,.36),transparent 35%),
+ radial-gradient(ellipse at 92% 88%,rgba(244,151,204,.28),transparent 32%),
+ linear-gradient(135deg,#f3efff 0%,#eaf5ff 48%,#fff0f7 100%) !important;color:#29264d !important;}}
+.stApp:before {{opacity:.07;background-size:54px 54px;}}
+[data-testid="stSidebar"] {{background:linear-gradient(160deg,#7660b5 0%,#6258a5 55%,#438da9 100%)!important;backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,.42)!important;box-shadow:12px 0 42px rgba(57,49,112,.14);}}
 [data-testid="stSidebar"] > div:first-child {{border-right:0!important;}}
-[data-testid="stSidebar"] [data-testid="stRadio"] label {{background:rgba(255,255,255,.035);border:1px solid transparent;transition:all .2s;}}
-[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.22);}}
-[data-testid="stSidebar"] [data-testid="stFileUploader"] section {{background:rgba(255,255,255,.12)!important;border:1px dashed rgba(255,255,255,.55)!important;backdrop-filter:blur(12px);}}
-.hero {{background:linear-gradient(112deg,rgba(176,100,226,.42),rgba(89,124,218,.30) 54%,rgba(53,194,222,.30))!important;border:1px solid rgba(255,255,255,.43)!important;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);box-shadow:0 22px 65px rgba(15,19,75,.24),inset 0 1px rgba(255,255,255,.32)!important;}}
-.hero:after {{background:radial-gradient(circle,rgba(255,255,255,.35),rgba(111,205,255,.20) 35%,rgba(227,113,209,.13) 58%,transparent 72%)!important;}}
-.hero h1 {{background:linear-gradient(100deg,#fff 5%,#d9f7ff 52%,#f6d7ff)!important;-webkit-background-clip:text!important;background-clip:text!important;}}
-.hero-tags span {{background:rgba(255,255,255,.13)!important;border-color:rgba(255,255,255,.30)!important;color:#fff!important;backdrop-filter:blur(10px);}}
-.panel,div[data-testid="stMetric"],[data-testid="stPlotlyChart"],[data-testid="stExpander"] {{background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.075))!important;border:1px solid rgba(255,255,255,.38)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 14px 38px rgba(20,20,75,.16),inset 0 1px rgba(255,255,255,.18)!important;}}
-div[data-testid="stMetric"] {{border-radius:18px!important;}}
-div[data-testid="stMetricLabel"] p,div[data-testid="stMetricValue"],[data-testid="stMetricDelta"] {{color:#fff!important;}}
-[data-testid="stPlotlyChart"] {{border-radius:20px!important;padding:10px!important;}}
-[data-testid="stDataFrame"],[data-testid="stTable"] {{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.34);border-radius:16px;backdrop-filter:blur(16px);}}
-.stButton button,.stDownloadButton button {{background:linear-gradient(110deg,rgba(255,255,255,.24),rgba(255,255,255,.10));color:inherit;border:1px solid rgba(255,255,255,.42);backdrop-filter:blur(12px);}}
-.stButton button[kind="primary"] {{background:linear-gradient(110deg,#75e5f2,#9b83f4)!important;color:#242052!important;}}
-.stAlert {{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(12px);}}
-[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] strong,[data-testid="stSidebar"] label {{color:#fff!important;}}
-[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{color:rgba(255,255,255,.78)!important;}}
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] strong,[data-testid="stSidebar"] label,[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{color:#fff!important;}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label {{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;transition:all .2s;}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4);}}
+[data-testid="stSidebar"] [data-testid="stFileUploader"] section {{background:rgba(255,255,255,.14)!important;border:1px dashed rgba(255,255,255,.58)!important;backdrop-filter:blur(12px);}}
 [data-testid="stHeader"] {{background:transparent!important;}}
-@media(prefers-reduced-transparency:reduce) {{.hero,.panel,div[data-testid="stMetric"],[data-testid="stPlotlyChart"] {{backdrop-filter:none!important;}}}}
+[data-testid="stMainBlockContainer"] {{color:#29264d;}}
+[data-testid="stMainBlockContainer"] h1,[data-testid="stMainBlockContainer"] h2,[data-testid="stMainBlockContainer"] h3,[data-testid="stMainBlockContainer"] h4 {{color:#29264d;}}
+[data-testid="stMainBlockContainer"] p,[data-testid="stMainBlockContainer"] label,[data-testid="stMainBlockContainer"] li {{color:#514d70;}}
+.hero {{background:linear-gradient(112deg,rgba(190,151,245,.34),rgba(130,184,236,.30) 54%,rgba(255,185,218,.34))!important;border:1px solid rgba(255,255,255,.82)!important;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);box-shadow:0 18px 48px rgba(91,76,150,.14),inset 0 1px rgba(255,255,255,.8)!important;}}
+.hero h1 {{background:linear-gradient(100deg,#39316f 5%,#496f9d 52%,#9361a8)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;}}
+.hero p {{color:#575477!important;}}
+.hero .kicker {{color:#6555a8!important;}}
+.hero-tags span {{background:rgba(255,255,255,.48)!important;border-color:rgba(255,255,255,.8)!important;color:#514b7c!important;backdrop-filter:blur(10px);}}
+.panel,div[data-testid="stMetric"],[data-testid="stPlotlyChart"],[data-testid="stExpander"] {{background:linear-gradient(135deg,rgba(255,255,255,.82),rgba(239,235,255,.70))!important;border:1px solid rgba(255,255,255,.95)!important;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 12px 32px rgba(83,75,139,.10),inset 0 1px rgba(255,255,255,.9)!important;}}
+div[data-testid="stMetric"] {{border-radius:18px!important;}}
+div[data-testid="stMetricLabel"] p {{color:#696287!important;}}
+div[data-testid="stMetricValue"] {{color:#302b59!important;}}
+[data-testid="stMetricDelta"] {{color:#238e86!important;}}
+[data-testid="stPlotlyChart"] {{border-radius:18px!important;padding:10px!important;}}
+[data-testid="stDataFrame"],[data-testid="stTable"] {{background:rgba(255,255,255,.88)!important;border:1px solid #d9d1f1!important;border-radius:15px;overflow:hidden;box-shadow:0 8px 24px rgba(76,66,130,.08);}}
+[data-testid="stDataFrame"] * {{color:#302b59;}}
+.stButton button,.stDownloadButton button {{background:linear-gradient(110deg,#ffffff,#eee9ff)!important;color:#393263!important;border:1px solid #d7cdef!important;border-radius:11px;backdrop-filter:blur(12px);}}
+.stButton button[kind="primary"] {{background:linear-gradient(110deg,#72d9dd,#b59af0)!important;color:#28244e!important;border:0!important;}}
+.stButton button:hover,.stDownloadButton button:hover {{border-color:#8b79ca!important;transform:translateY(-2px);box-shadow:0 7px 18px rgba(110,91,174,.16);}}
+[data-testid="stExpander"] {{background:rgba(255,255,255,.72)!important;border:1px solid #d9d1f1!important;border-radius:14px;}}
+.stAlert {{background:rgba(255,255,255,.78)!important;border:1px solid #d9d1f1!important;color:#39345f!important;}}
+hr {{border-color:#d7d0eb!important;opacity:.8;}}
+@media(max-width:900px) {{.block-container {{padding-left:1rem;padding-right:1rem;}}.hero {{padding:22px;min-height:0;}}}}
+@media(prefers-reduced-motion:reduce) {{*,*::before,*::after {{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}}}
 </style>
 """,unsafe_allow_html=True)
 
@@ -331,7 +340,7 @@ elif page=="Omnichannel Journey":
         counts["Share"]=counts["Respondents"]/counts["Respondents"].sum()
         fig=px.bar(counts,x="Journey",y="Respondents",color="Journey",text="Respondents",color_discrete_sequence=["#8B7CFF","#4EA5FF","#23C6A8","#F4B860"])
         st.plotly_chart(theme_chart(fig),use_container_width=True)
-        st.dataframe(counts.assign(Share=counts["Share"].map(lambda v:f"{v:.1%}")),use_container_width=True,hide_index=True)
+        st.dataframe(counts.assign(Share=counts["Share"].map(lambda v:f"{v:.1%}")),use_container_width=True,hide_index=True,theme="light")
         web=counts.loc[counts["Journey"].str.contains("webroom",case=False),"Share"].sum()
         show=counts.loc[counts["Journey"].str.contains("showroom",case=False),"Share"].sum()
         p,q=st.columns(2); p.metric("Webrooming share",f"{web:.1%}"); q.metric("Showrooming share",f"{show:.1%}")
@@ -351,7 +360,7 @@ elif page=="Customer Insights":
         fig=px.bar(long,x=group,y="Mean score",color="Construct",barmode="group",color_discrete_sequence=["#8B7CFF","#4EA5FF","#23C6A8","#F4B860","#E879A5","#8B9CF6"])
         fig.update_yaxes(range=[0,5],dtick=1)
         st.plotly_chart(theme_chart(fig),use_container_width=True)
-        st.dataframe(grouped,use_container_width=True,hide_index=True)
+        st.dataframe(grouped,use_container_width=True,hide_index=True,theme="light")
     else: st.info("Add Product Category, AR Usage or Shopping Journey to compare customer groups.")
     st.markdown("#### Construct relationship explorer")
     st.plotly_chart(theme_chart(px.imshow(data[names].corr(),text_auto=".2f",zmin=-1,zmax=1,color_continuous_scale="RdBu_r",aspect="auto")),use_container_width=True)
@@ -382,7 +391,7 @@ elif page=="Research Analytics":
         else:
             rows.append({"Hypothesis":h,"Relationship":f"{x} → {y}","N":len(pair),"Pearson r":np.nan,"p-value":np.nan,"Spearman ρ":np.nan,"Decision":"Insufficient variation"})
     hdf=pd.DataFrame(rows)
-    st.dataframe(hdf,use_container_width=True,hide_index=True,column_config={"Pearson r":st.column_config.NumberColumn(format="%.3f"),"p-value":st.column_config.NumberColumn(format="%.4f"),"Spearman ρ":st.column_config.NumberColumn(format="%.3f")})
+    st.dataframe(hdf,use_container_width=True,hide_index=True,theme="light",column_config={"Pearson r":st.column_config.NumberColumn(format="%.3f"),"p-value":st.column_config.NumberColumn(format="%.4f"),"Spearman ρ":st.column_config.NumberColumn(format="%.3f")})
     st.caption("Pearson tests linear association; Spearman provides a rank-based sensitivity check. The decision column uses the selected unadjusted α. Consider multiple-testing correction before strong claims.")
     st.download_button("Download hypothesis results",hdf.to_csv(index=False).encode("utf-8"),"tryon_hypothesis_tests.csv","text/csv")
     st.markdown("#### Multiple regression model")
@@ -414,7 +423,7 @@ elif page=="Research Analytics":
         d2.metric("Breusch-Pagan p",f"{bp_p:.4f}" if pd.notna(bp_p) else "N/A")
         d3.metric("Durbin-Watson",f"{sm.stats.stattools.durbin_watson(residuals):.3f}")
         with st.expander("View multicollinearity (VIF)"):
-            st.dataframe(pd.DataFrame(vif),use_container_width=True,hide_index=True)
+            st.dataframe(pd.DataFrame(vif),use_container_width=True,hide_index=True,theme="light")
         diag_fig=px.scatter(x=fit.fittedvalues,y=residuals,labels={"x":"Fitted values","y":"Residuals"},title="Residuals versus fitted values")
         diag_fig.add_hline(y=0,line_dash="dash",line_color="#E879A5")
         st.plotly_chart(theme_chart(diag_fig),use_container_width=True)
@@ -447,7 +456,7 @@ elif page=="Customer Segmentation":
         sizes=prof.copy()
         sizes.insert(0,"Respondents",pd.Series(labels).value_counts().sort_index().values)
         st.markdown("#### Segment profiles")
-        st.dataframe(sizes,use_container_width=True)
+        st.dataframe(sizes,use_container_width=True,theme="light")
         long=prof.reset_index().melt(id_vars="Segment",var_name="Construct",value_name="Mean score")
         fig=px.line_polar(long,r="Mean score",theta="Construct",color="Segment",line_close=True,color_discrete_sequence=["#8B7CFF","#23C6A8","#E879A5","#4EA5FF","#F4B860"])
         fig.update_layout(polar=dict(radialaxis=dict(range=[0,5],showticklabels=True)))
@@ -494,9 +503,9 @@ elif page=="Data Studio":
         records.append({"Construct":name,"Items":len(cc),"Cronbach's alpha":alpha(data[cc]),"Mean score":data[name].mean()})
     rel=pd.DataFrame(records)
     st.markdown("#### Construct diagnostics")
-    st.dataframe(rel,use_container_width=True,hide_index=True,column_config={"Cronbach's alpha":st.column_config.NumberColumn(format="%.3f"),"Mean score":st.column_config.NumberColumn(format="%.2f")})
+    st.dataframe(rel,use_container_width=True,hide_index=True,theme="light",column_config={"Cronbach's alpha":st.column_config.NumberColumn(format="%.3f"),"Mean score":st.column_config.NumberColumn(format="%.2f")})
     st.markdown("#### Respondent preview")
-    st.dataframe(data.head(15),use_container_width=True,hide_index=True)
+    st.dataframe(data.head(15),use_container_width=True,hide_index=True,theme="light")
     st.download_button("Download scored dataset",data.to_csv(index=False).encode("utf-8"),"tryon_intelligence_scored_data.csv","text/csv")
     st.download_button("Download construct summary",rel.to_csv(index=False).encode("utf-8"),"tryon_construct_summary.csv","text/csv")
 
