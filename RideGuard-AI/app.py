@@ -71,7 +71,7 @@ def parse_uploaded(raw: bytes):
 
 def chart_theme(fig, height=330):
     fig.update_layout(
-        template="plotly_dark", height=height,
+        template="plotly_dark" if theme_mode == "Dark" else "plotly_white", height=height,
         margin=dict(l=8, r=8, t=35, b=8),
         paper_bgcolor=PALETTE["panel"], plot_bgcolor=PALETTE["panel"],
         font=dict(color=PALETTE["text"], size=11),
@@ -328,7 +328,7 @@ st.markdown(f"""
 <style>
 :root {{ color-scheme: {theme_mode.lower()}; }}
 .stApp {{background:{PALETTE['bg']}; color:{PALETTE['text']};}}
-[data-testid="stHeader"] {{background:rgba(10,16,32,.92);}}
+[data-testid="stHeader"] {{background:{PALETTE["bg"]};}}
 .block-container {{max-width:1600px; padding:clamp(.65rem,1.6vw,1.45rem) clamp(.8rem,2.1vw,2rem) 2rem;}}
 [data-testid="stSidebar"] {{background:{PALETTE['panel']}; border-right:1px solid {PALETTE['border']};}}
 [data-testid="stSidebar"] > div {{padding-top:1rem;}}
@@ -353,7 +353,7 @@ background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30
 [data-testid="stMetric"]:hover,[data-testid="stVerticalBlockBorderWrapper"]:hover {{transform:translateY(-2px);border-color:{PALETTE['teal']};box-shadow:0 8px 24px rgba(0,0,0,.08);}}
 .stButton button:hover,.stDownloadButton button:hover {{transform:translateY(-1px);transition:all .18s ease;}}
 .eyebrow {{font-size:.68rem; letter-spacing:.16em; color:{PALETTE['teal']}; font-weight:800;}}
-.hero h1 {{font-size:clamp(1.55rem,3vw,2.2rem); letter-spacing:-.045em; margin:.35rem 0 .25rem; color:#fff; line-height:1.15;}}
+.hero h1 {{font-size:clamp(1.55rem,3vw,2.2rem); letter-spacing:-.045em; margin:.35rem 0 .25rem; color:{PALETTE["text"]}; line-height:1.15;}}
 .hero p {{color:{PALETTE['muted']}; margin:0; font-size:clamp(.88rem,1.2vw,1rem);}}
 .pill {{display:inline-block; border:1px solid {PALETTE['border']}; border-radius:999px; padding:.22rem .65rem; color:{PALETTE['muted']}; font-size:.72rem; margin:.2rem .25rem .2rem 0;}}
 .small-muted {{color:{PALETTE['muted']}; font-size:.82rem;}}
