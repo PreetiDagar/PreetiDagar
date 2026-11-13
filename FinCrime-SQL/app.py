@@ -102,24 +102,24 @@ cash AS (
  GROUP BY customer_id, CAST(transaction_ts AS DATE)
 ),
 hits AS (
- SELECT transaction_id, customer_id, 'Velocity burst' AS rule_name,
-        78 AS score, 'High' AS severity, transaction_ts AS created_at,
+ SELECT transaction_id, customer_id, amount, 'Velocity burst' AS rule_name,
+        78 AS risk_score, 'High' AS severity, transaction_ts AS created_at,
         '5 or more transactions within a rolling 10-minute window' AS rationale
  FROM velocity WHERE n10>=5
  UNION ALL
- SELECT t.transaction_id,t.customer_id,'Near-threshold cash activity',82,'High',t.transaction_ts,
+ SELECT t.transaction_id,t.customer_id,t.amount,'Near-threshold cash activity',82,'High',t.transaction_ts,
         'Customer made at least 3 cash deposits in the illustrative near-threshold band on one day'
  FROM transactions t JOIN cash c ON t.customer_id=c.customer_id
    AND CAST(t.transaction_ts AS DATE)=c.tx_date
  WHERE c.n_deposits>=3 AND c.total_amount>=20000
    AND t.transaction_type='CASH_DEPOSIT' AND t.amount BETWEEN 8000 AND 9999.99
  UNION ALL
- SELECT transaction_id,customer_id,'Geographic inconsistency',68,'Medium',transaction_ts,
+ SELECT transaction_id,customer_id,amount,'Geographic inconsistency',68,'Medium',transaction_ts,
         'Merchant country and IP country differ; travel, VPNs and data quality can explain this'
  FROM transactions
  WHERE merchant_country<>ip_country AND merchant_country<>'UNKNOWN' AND ip_country<>'UNKNOWN'
  UNION ALL
- SELECT transaction_id,customer_id,'High-value activity',72,'Medium',transaction_ts,
+ SELECT transaction_id,customer_id,amount,'High-value activity',72,'Medium',transaction_ts,
         'Transaction exceeds the demonstration review threshold of INR 100,000'
  FROM transactions WHERE amount>=100000
 )
