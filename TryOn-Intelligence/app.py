@@ -23,8 +23,8 @@ LABELS = {
     15:"Webrooming",16:"Showrooming",17:"Store-visit substitution",18:"Channel continuity",
     19:"Purchase willingness",20:"Online purchase intention",21:"AR-assisted purchase intention",
 }
-DARK = {"bg":"#0A1020","panel":"#111B2E","panel2":"#17243B","border":"#293A55","text":"#F3F6FC","muted":"#A6B4CA","accent":"#35D0BA","grid":"#2A3A52"}
-LIGHT = {"bg":"#F3F6FB","panel":"#FFFFFF","panel2":"#EAF0F7","border":"#D5DFEB","text":"#172338","muted":"#61718A","accent":"#087F76","grid":"#DDE5EF"}
+DARK = {"bg":"#15164A","panel":"#343477","panel2":"#51459A","border":"#A7B8F0","text":"#FFFFFF","muted":"#E2E4FF","accent":"#77E4F4","grid":"#7885C8"}
+LIGHT = {"bg":"#F3F2FF","panel":"#FFFFFF","panel2":"#E8E4FF","border":"#D8D1F6","text":"#24224C","muted":"#66618A","accent":"#6557C8","grid":"#DED9F2"}
 
 def demo_data(n=70, seed=42):
     """Illustrative synthetic data only; not the original research responses."""
@@ -200,6 +200,36 @@ hr {{border-color:{C['border']};opacity:.8;}}
 .stAlert {{border-radius:12px;}}
 @media(max-width:720px) {{.hero-orbit {{width:84px;height:84px;right:16px;top:22px;transform:none;opacity:.45}}.hero {{padding-right:90px}}.hero-tags span {{font-size:.62rem}}}}
 @media(max-height:800px) and (min-width:900px) {{.hero {{min-height:0;padding:20px 26px;margin-bottom:16px}}.hero h1 {{font-size:2.2rem}}.hero-orbit {{width:112px;height:112px}}}}
+
+/* Lumina-inspired purple / aqua / rose glassmorphism finish */
+.stApp {{background:
+ radial-gradient(ellipse at 9% 5%,rgba(196,91,239,.72),transparent 37%),
+ radial-gradient(ellipse at 91% 7%,rgba(27,190,224,.66),transparent 38%),
+ radial-gradient(ellipse at 91% 88%,rgba(235,108,191,.48),transparent 32%),
+ radial-gradient(ellipse at 8% 100%,rgba(35,60,158,.65),transparent 42%),
+ linear-gradient(135deg,#211b68 0%,#5143a0 43%,#147eaf 100%);}}
+.stApp:before {{opacity:.10;background-size:54px 54px;}}
+[data-testid="stSidebar"] {{background:linear-gradient(160deg,rgba(255,255,255,.19),rgba(46,36,116,.48))!important;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-right:1px solid rgba(255,255,255,.35)!important;box-shadow:12px 0 42px rgba(20,18,70,.16);}}
+[data-testid="stSidebar"] > div:first-child {{border-right:0!important;}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label {{background:rgba(255,255,255,.035);border:1px solid transparent;transition:all .2s;}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.22);}}
+[data-testid="stSidebar"] [data-testid="stFileUploader"] section {{background:rgba(255,255,255,.12)!important;border:1px dashed rgba(255,255,255,.55)!important;backdrop-filter:blur(12px);}}
+.hero {{background:linear-gradient(112deg,rgba(176,100,226,.42),rgba(89,124,218,.30) 54%,rgba(53,194,222,.30))!important;border:1px solid rgba(255,255,255,.43)!important;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);box-shadow:0 22px 65px rgba(15,19,75,.24),inset 0 1px rgba(255,255,255,.32)!important;}}
+.hero:after {{background:radial-gradient(circle,rgba(255,255,255,.35),rgba(111,205,255,.20) 35%,rgba(227,113,209,.13) 58%,transparent 72%)!important;}}
+.hero h1 {{background:linear-gradient(100deg,#fff 5%,#d9f7ff 52%,#f6d7ff)!important;-webkit-background-clip:text!important;background-clip:text!important;}}
+.hero-tags span {{background:rgba(255,255,255,.13)!important;border-color:rgba(255,255,255,.30)!important;color:#fff!important;backdrop-filter:blur(10px);}}
+.panel,div[data-testid="stMetric"],[data-testid="stPlotlyChart"],[data-testid="stExpander"] {{background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.075))!important;border:1px solid rgba(255,255,255,.38)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 14px 38px rgba(20,20,75,.16),inset 0 1px rgba(255,255,255,.18)!important;}}
+div[data-testid="stMetric"] {{border-radius:18px!important;}}
+div[data-testid="stMetricLabel"] p,div[data-testid="stMetricValue"],[data-testid="stMetricDelta"] {{color:#fff!important;}}
+[data-testid="stPlotlyChart"] {{border-radius:20px!important;padding:10px!important;}}
+[data-testid="stDataFrame"],[data-testid="stTable"] {{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.34);border-radius:16px;backdrop-filter:blur(16px);}}
+.stButton button,.stDownloadButton button {{background:linear-gradient(110deg,rgba(255,255,255,.24),rgba(255,255,255,.10));color:inherit;border:1px solid rgba(255,255,255,.42);backdrop-filter:blur(12px);}}
+.stButton button[kind="primary"] {{background:linear-gradient(110deg,#75e5f2,#9b83f4)!important;color:#242052!important;}}
+.stAlert {{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(12px);}}
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] strong,[data-testid="stSidebar"] label {{color:#fff!important;}}
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{color:rgba(255,255,255,.78)!important;}}
+[data-testid="stHeader"] {{background:transparent!important;}}
+@media(prefers-reduced-transparency:reduce) {{.hero,.panel,div[data-testid="stMetric"],[data-testid="stPlotlyChart"] {{backdrop-filter:none!important;}}}}
 </style>
 """,unsafe_allow_html=True)
 
