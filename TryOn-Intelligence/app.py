@@ -50,7 +50,7 @@ def alpha(frame):
 def theme_chart(fig):
     fig.update_layout(template="plotly_dark" if mode=="Dark" else "plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=C["text"],family="Inter, Arial"),margin=dict(l=12,r=12,t=35,b=12),height=310)
+        font=dict(color=C["text"],family="Inter, Arial"),margin=dict(l=16,r=16,t=38,b=28),height=340)
     fig.update_xaxes(gridcolor=C["grid"]); fig.update_yaxes(gridcolor=C["grid"])
     return fig
 
@@ -182,15 +182,43 @@ hr {{border-color:{C['border']};opacity:.8;}}
 @media(prefers-reduced-motion:reduce) {{
  *,*::before,*::after {{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
 }}
+
+/* Page-aware holographic interface refinements */
+.hero {isolation:isolate;}
+.hero-orbit {position:absolute;right:5%;top:50%;width:150px;height:150px;transform:translateY(-50%);border:1px solid color-mix(in srgb,\${C['accent']} 48%,transparent);border-radius:50%;opacity:.8;pointer-events:none;box-shadow:0 0 35px color-mix(in srgb,\${C['accent']} 14%,transparent),inset 0 0 25px color-mix(in srgb,\${C['accent']} 10%,transparent);}
+.hero-orbit:before,.hero-orbit:after {content:"";position:absolute;inset:17px;border:1px dashed color-mix(in srgb,\${C['accent']} 50%,transparent);border-radius:50%;animation:orbitSpin 18s linear infinite;}
+.hero-orbit:after {inset:37px;border-style:solid;opacity:.55;animation-direction:reverse;animation-duration:12s;}
+.hero-orbit span {position:absolute;left:50%;top:50%;width:14px;height:14px;border-radius:50%;background:\${C['accent']};transform:translate(-50%,-50%);box-shadow:0 0 20px \${C['accent']};}
+.hero-orbit i,.hero-orbit b {position:absolute;width:7px;height:7px;border-radius:50%;background:#9c8cff;box-shadow:0 0 14px #9c8cff;left:12%;top:50%;animation:orbitDot 7s linear infinite;}
+.hero-orbit b {left:auto;top:12%;right:22%;background:#ef6ca8;box-shadow:0 0 14px #ef6ca8;animation-duration:9s;animation-direction:reverse;}
+@keyframes orbitSpin {to{transform:rotate(360deg)}}
+@keyframes orbitDot {to{transform:rotate(360deg) translateX(58px) rotate(-360deg)}}
+[data-testid="stMainBlockContainer"] h2,[data-testid="stMainBlockContainer"] h3 {letter-spacing:-.025em;}
+[data-testid="stMainBlockContainer"] h3 {margin-top:.3rem;}
+[data-testid="stPlotlyChart"] iframe {max-width:100%!important;}
+[data-testid="stDataFrame"] {max-width:100%;font-size:.9rem;}
+.stAlert {border-radius:12px;}
+@media(max-width:720px) {.hero-orbit {width:84px;height:84px;right:16px;top:22px;transform:none;opacity:.45}.hero {padding-right:90px}.hero-tags span {font-size:.62rem}}
+@media(max-height:800px) and (min-width:900px) {.hero {min-height:0;padding:20px 26px;margin-bottom:16px}.hero h1 {font-size:2.2rem}.hero-orbit {width:112px;height:112px}}
 </style>
 """,unsafe_allow_html=True)
 
+PAGE_COPY = {
+    "Executive Overview": ("RESEARCH COMMAND CENTER", "🪞 TryOn Intelligence", "A clear view of AR experience, shopper confidence and omnichannel purchase behaviour."),
+    "AR Experience Lab": ("EXPERIENCE QUALITY / STIMULUS", "✦ AR Experience Lab", "Explore the five experience dimensions shaping how shoppers evaluate virtual try-on."),
+    "Omnichannel Journey": ("CHANNEL INTELLIGENCE / BEHAVIOUR", "↗ Omnichannel Journey", "Understand webrooming, showrooming and the connections between digital and physical retail."),
+    "Customer Insights": ("SEGMENTATION / CUSTOMER SIGNALS", "◎ Customer Insights", "Compare customer groups and discover relationships between the six research constructs."),
+    "Strategy Simulator": ("SCENARIO PLANNING / WHAT-IF", "⌁ Strategy Simulator", "Explore transparent improvement scenarios for AR experience and purchase intention."),
+    "Data Studio": ("DATA QUALITY / MEASUREMENT", "▦ Data Studio", "Inspect response completeness, construct reliability and respondent-level scores.")
+}
+page_kicker, page_title, page_subtitle = PAGE_COPY[page]
 st.markdown(f"""
 <div class="hero">
- <div class="kicker">✦ AR COMMERCE / CUSTOMER EXPERIENCE INTELLIGENCE</div>
- <h1 style="margin:.45rem 0 .35rem 0;">🪞 TryOn Intelligence</h1>
- <p style="font-size:1.04rem;color:{C['muted']};margin:0;">See how virtual try-on shapes shopper confidence, omnichannel choices and purchase intention.</p>
- <div class="hero-tags"><span>21 SURVEY ITEMS</span><span>6 RESEARCH CONSTRUCTS</span><span>S-O-R + DUAL-FACTOR LENS</span></div>
+ <div class="kicker">✦ {page_kicker}</div>
+ <h1 style="margin:.45rem 0 .35rem 0;">{page_title}</h1>
+ <p style="font-size:1.04rem;color:{C['muted']};margin:0;">{page_subtitle}</p>
+ <div class="hero-tags"><span>21 SURVEY ITEMS</span><span>6 RESEARCH CONSTRUCTS</span><span>S-O-R + DUAL-FACTOR LENS</span><span>INTERACTIVE ANALYTICS</span></div>
+ <div class="hero-orbit" aria-hidden="true"><span></span><i></i><b></b></div>
 </div>
 """,unsafe_allow_html=True)
 
@@ -276,7 +304,7 @@ elif page=="Omnichannel Journey":
 elif page=="Customer Insights":
     st.subheader("Customer insights")
     st.caption("Compare construct scores across product categories, AR usage groups or journey types.")
-    group=category_col or ar_col or journey_col
+    group=category_col or ar_col or journey_col or next((c for c in data.columns if 'purchase' in str(c).lower() and ('often' in str(c).lower() or 'frequency' in str(c).lower())),None)
     if group:
         grouped=data.groupby(group,dropna=False)[names].mean().reset_index()
         long=grouped.melt(id_vars=group,var_name="Construct",value_name="Mean score")
