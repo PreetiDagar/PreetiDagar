@@ -18,7 +18,7 @@ st.set_page_config(
     page_title="RideGuard AI | Mobility Risk Intelligence",
     page_icon="🚕",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 PALETTE = {
@@ -216,15 +216,24 @@ elif page == "Risk Lab":
         risk = max(0.0, min(1.0, 1 - completion_prob))
         label = "HIGH" if risk >= .55 else "MODERATE" if risk >= .30 else "LOW"
         color = PALETTE["coral"] if label == "HIGH" else PALETTE["amber"] if label == "MODERATE" else PALETTE["green"]
-        st.markdown(f'<div class="panel"><div class="small-muted">ESTIMATED UNSUCCESSFUL-OUTCOME RISK</div><div style="font-size:2.7rem;font-weight:850;color:{color}">{risk:.1%}</div><div style="font-weight:750;color:{color}">{label} RISK</div><div class="small-muted">Estimated completion probability: {completion_prob:.1%}</div></div>', unsafe_allow_html=True)
-        probs = pd.DataFrame({"Outcome":list(prob.keys()),"Estimated probability":list(prob.values())}).sort_values("Estimated probability",ascending=False)
-        fig = px.bar(probs, x="Estimated probability", y="Outcome", orientation="h",
-                     color="Outcome", color_discrete_map={
-                         "Completed":PALETTE["teal"],"Cancelled":PALETTE["coral"],
-                         "Incomplete":PALETTE["amber"],"No Driver Found":PALETTE["purple"]})
-        fig.update_xaxes(tickformat=".0%", range=[0,1])
-        st.plotly_chart(chart_theme(fig,300), use_container_width=True)
-        st.caption("This is a model estimate based on historical patterns, not a guarantee or a causal explanation. Unsuccessful risk = 1 − estimated probability of Completed.")
+        st.markdown(f'<div class="risk-card"><div class="section-kicker">ESTIMATED UNSUCCESSFUL-OUTCOME RISK</div><div style="font-size:clamp(2rem,4vw,3rem);font-weight:850;line-height:1.15;color:{color};margin:.35rem 0">{risk:.1%}</div><div style="font-weight:800;color:{color};letter-spacing:.08em">{label} RISK</div><div class="small-muted" style="margin-top:.45rem">Estimated completion probability: {completion_prob:.1%}</div></div>', unsafe_allow_html=True)
+        probs = pd.DataFrame({"Outcome":list(prob.keys()),"Estimated probability":list(prob.values())}).sort_values("Estimated probability",ascending=True)
+        left_result, right_result = st.columns([.8,1.4], gap="large")
+        with left_result:
+            st.markdown("#### Scenario summary")
+            st.metric("Completion probability", f"{completion_prob:.1%}")
+            st.metric("Unsuccessful-outcome risk", f"{risk:.1%}")
+            st.caption("Risk = 1 − probability of Completed.")
+        with right_result:
+            st.markdown("#### Predicted outcome distribution")
+            fig = px.bar(probs, x="Estimated probability", y="Outcome", orientation="h",
+                         color="Outcome", color_discrete_map={
+                             "Completed":PALETTE["teal"],"Cancelled":PALETTE["coral"],
+                             "Incomplete":PALETTE["amber"],"No Driver Found":PALETTE["purple"]})
+            fig.update_xaxes(tickformat=".0%", range=[0,1], title=None)
+            fig.update_yaxes(title=None)
+            st.plotly_chart(chart_theme(fig,260), use_container_width=True)
+        st.caption("Model estimates reflect patterns in the selected dataset; they are not guarantees or causal explanations.")
     else:
         st.info("Submit a booking scenario to see the predicted outcome distribution.")
 
@@ -301,4 +310,55 @@ elif page == "Data Explorer":
                        "rideguard_cleaned_bookings.csv","text/csv")
 
 st.markdown("---")
-st.markdown('<div class="small-muted">RideGuard AI · Built by Preeti Dagar · Portfolio demonstration. Predictions are estimates, not operational guarantees.</div>',unsafe_allow_html=True)
+st.markdown('<div class="small-muted">RideGuard AI · Built by Preeti Dagar · Portfolio demonstration. Predictions are estimates, not operational guarantees.</div>',unsafe_allow_html=True)st.markdown(f"""
+<style>
+:root {{ color-scheme: dark; }}
+.stApp {{background:{PALETTE['bg']}; color:{PALETTE['text']};}}
+[data-testid="stHeader"] {{background:rgba(10,16,32,.92);}}
+.block-container {{max-width:1600px; padding:clamp(.65rem,1.6vw,1.45rem) clamp(.8rem,2.1vw,2rem) 2rem;}}
+[data-testid="stSidebar"] {{background:{PALETTE['panel']}; border-right:1px solid {PALETTE['border']};}}
+[data-testid="stSidebar"] > div {{padding-top:1rem;}}
+[data-testid="stMetric"] {{background:linear-gradient(145deg,{PALETTE['panel']},{PALETTE['panel2']}); border:1px solid {PALETTE['border']}; padding:clamp(9px,1vw,15px); border-radius:14px; min-width:0;}}
+[data-testid="stMetricLabel"] p {{color:{PALETTE['muted']} !important; font-size:.78rem;}}
+[data-testid="stMetricValue"] {{color:{PALETTE['text']} !important; font-size:clamp(1.15rem,2vw,1.8rem);}}
+[data-testid="stVerticalBlockBorderWrapper"] {{background:{PALETTE['panel']}; border:1px solid {PALETTE['border']}; border-radius:15px;}}
+[data-testid="stTabs"] button {{color:{PALETTE['muted']} !important;}}
+[data-testid="stTabs"] button[aria-selected="true"] {{color:{PALETTE['teal']} !important; border-bottom-color:{PALETTE['teal']} !important;}}
+.stButton button, .stDownloadButton button, [data-testid="stFormSubmitButton"] button {{border-radius:11px; border:1px solid {PALETTE['border']}; min-height:2.65rem; font-weight:650;}}
+.stButton button[kind="primary"], [data-testid="stFormSubmitButton"] button[kind="primary"] {{background:linear-gradient(100deg,{PALETTE['teal']},#27B9B0); color:#061421; border:0;}}
+div[data-testid="stFileUploaderDropzone"] {{background:{PALETTE['panel2']}; border:1px dashed {PALETTE['border']}; border-radius:12px;}}
+div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {{border-radius:10px; background:{PALETTE['panel2']};}}
+[data-testid="stDataFrame"], [data-testid="stTable"] {{border:1px solid {PALETTE['border']}; border-radius:12px; overflow:hidden;}}
+.hero {{position:relative; overflow:hidden; padding:clamp(1rem,2vw,1.65rem) clamp(1rem,2.3vw,2rem); border:1px solid {PALETTE['border']}; border-radius:20px;
+background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30%),linear-gradient(120deg,#14223B,#111A2D 65%,#132A38); margin-bottom:1rem;}}
+.eyebrow {{font-size:.68rem; letter-spacing:.16em; color:{PALETTE['teal']}; font-weight:800;}}
+.hero h1 {{font-size:clamp(1.55rem,3vw,2.2rem); letter-spacing:-.045em; margin:.35rem 0 .25rem; color:#fff; line-height:1.15;}}
+.hero p {{color:{PALETTE['muted']}; margin:0; font-size:clamp(.88rem,1.2vw,1rem);}}
+.pill {{display:inline-block; border:1px solid {PALETTE['border']}; border-radius:999px; padding:.22rem .65rem; color:{PALETTE['muted']}; font-size:.72rem; margin:.2rem .25rem .2rem 0;}}
+.small-muted {{color:{PALETTE['muted']}; font-size:.82rem;}}
+.risk-card {{padding:1.1rem 1.25rem; border:1px solid {PALETTE['border']}; border-radius:16px; background:linear-gradient(140deg,{PALETTE['panel2']},{PALETTE['panel']}); height:100%;}}
+.section-kicker {{color:{PALETTE['teal']};font-size:.68rem;letter-spacing:.12em;font-weight:800;}}
+div[data-testid="stAlert"] {{border-radius:12px;}}
+h2, h3 {{letter-spacing:-.025em;}}
+@media (max-width: 900px) {{
+  .block-container {{padding-left:1rem;padding-right:1rem;}}
+  [data-testid="stHorizontalBlock"] {{gap:.7rem;}}
+}}
+@media (max-width: 640px) {{
+  .block-container {{padding:.6rem .7rem 1.25rem;}}
+  .hero {{border-radius:15px;margin-bottom:.8rem;}}
+  .hero h1 {{font-size:1.55rem;}}
+  [data-testid="stHorizontalBlock"] {{flex-direction:column;gap:.5rem;}}
+  [data-testid="column"] {{width:100% !important;flex:1 1 100% !important;}}
+  [data-testid="stMetric"] {{padding:9px 11px;}}
+  [data-testid="stMetricValue"] {{font-size:1.25rem;}}
+  .stButton button, .stDownloadButton button {{width:100%;}}
+}}
+@media (max-height: 780px) and (min-width: 641px) {{
+  .block-container {{padding-top:.55rem;padding-bottom:1rem;}}
+  .hero {{padding:1rem 1.35rem;margin-bottom:.7rem;}}
+  .hero h1 {{font-size:1.8rem;}}
+  h2 {{font-size:1.35rem !important;}}
+}}
+</style>
+""", unsafe_allow_html=True)
