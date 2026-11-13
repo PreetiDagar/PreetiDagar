@@ -133,46 +133,49 @@ con.execute("CREATE TABLE alerts AS SELECT * FROM alerts_df")
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
-:root{--bg:#071321;--surface:#0e2032;--surface2:#13283d;--line:#29445d;--text:#eaf2fb;--muted:#9aafc4;--cyan:#55d9ff;--amber:#ffad55;--red:#ff6878;--green:#55d6ad}
-html,body,[data-testid="stAppViewContainer"],.stApp{background:radial-gradient(ellipse at 72% 0%,rgba(29,100,145,.16),transparent 38%),linear-gradient(145deg,#06101c,#091827 60%,#0a1b2b)!important;color:var(--text)!important;font-family:'Manrope',sans-serif}
-[data-testid="stHeader"]{background:rgba(6,16,28,.96)!important;height:2rem}
-[data-testid="stSidebar"]{background:linear-gradient(180deg,#081522,#0c1e30)!important;border-right:1px solid #203a52!important}
-[data-testid="stSidebar"] *{color:#dce8f5}
-[data-testid="stSidebar"] [data-testid="stRadio"] label{padding:6px 9px;border:1px solid #203a52;border-radius:7px;margin:3px 0;background:#0d2032;font-size:12px}
-[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{border-color:#55d9ff;background:#112b40}
-.block-container{max-width:100%!important;padding:.45rem .8rem .45rem!important}
-h1,h2,h3,h4{color:#edf5ff!important;font-family:'Manrope',sans-serif!important;letter-spacing:-.02em}
-p,li,label,.stCaption{color:#aebfd1}
-.hero{position:relative;overflow:hidden;background:linear-gradient(105deg,#10253a,#0d3048 68%,#102338);border:1px solid #315773;border-radius:10px;padding:9px 14px;margin:0 0 8px;box-shadow:inset 0 0 22px rgba(60,185,230,.06),0 5px 15px rgba(0,0,0,.18)}
-.hero:after{content:"";position:absolute;right:7%;top:-82px;width:145px;height:145px;border:1px solid rgba(85,217,255,.25);border-radius:50%;box-shadow:0 0 0 13px rgba(85,217,255,.035),0 0 0 26px rgba(85,217,255,.02);pointer-events:none}
-.hero h1{font-size:21px!important;margin:0!important}.hero p{font-size:10px;margin:2px 0 0;color:#a9bed2}
-.eyebrow{font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#68dafa;text-transform:uppercase}
-.pill{display:inline-block;padding:3px 7px;border-radius:20px;background:#10283d;border:1px solid #31536c;font:8px 'IBM Plex Mono';color:#b2d9e8;margin:4px 4px 0 0}
-[data-testid="stMetric"]{background:linear-gradient(145deg,#12283d,#0c1d2e)!important;border:1px solid #29465f!important;border-radius:8px!important;padding:5px 9px!important;box-shadow:0 4px 12px rgba(0,0,0,.16)!important}
-[data-testid="stMetricLabel"] p{font-size:9px!important;color:#9bb2c8!important;text-transform:uppercase;letter-spacing:.07em}
-[data-testid="stMetricValue"]{font:600 18px 'IBM Plex Mono'!important;color:#f1f7ff!important}
-[data-testid="stPlotlyChart"]{background:linear-gradient(145deg,#0b1b2b,#071421)!important;border:1px solid #294a63!important;border-radius:9px!important;padding:2px!important;box-shadow:0 5px 16px rgba(0,0,0,.2),0 0 10px rgba(55,175,220,.05)!important}
-[data-testid="stDataFrame"]{border:1px solid #29465f!important;border-radius:7px!important;overflow:hidden}
-.stButton button,.stDownloadButton button{background:#132d45!important;color:#eaf6ff!important;border:1px solid #365d78!important;border-radius:7px!important;min-height:30px!important}
-.stButton button:hover,.stDownloadButton button:hover{border-color:#55d9ff!important;box-shadow:0 0 10px rgba(85,217,255,.13)!important}
-.stTextInput input,.stTextArea textarea,.stSelectbox div[data-baseweb="select"]>div,.stNumberInput input{background:#0b1d2d!important;color:#edf6ff!important;border-color:#31516a!important}
-.fc-queue{background:linear-gradient(150deg,#10243a,#0b1b2c);border:1px solid #2b4862;border-radius:9px;padding:10px;height:390px;overflow:hidden}
-.fc-queue-title{font-size:15px;font-weight:700;color:#f0f6ff;margin:4px 0 9px}
-.fc-alert-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center;padding:7px 2px;border-bottom:1px solid rgba(103,139,169,.18);min-height:48px}
-.fc-alert-row:last-child{border-bottom:0}
-.fc-alert-rule{font-size:10px;line-height:1.25;color:#e4eef8;white-space:normal;overflow-wrap:anywhere}
-.fc-alert-meta{font:8px 'IBM Plex Mono';color:#91a9bf}
-.fc-alert-tag{font:8px 'IBM Plex Mono';font-weight:600;letter-spacing:.04em;padding:3px 5px;border-radius:4px;background:#33202a;color:#ff8791}
-.fc-alert-tag.medium{background:#352a1b;color:#ffc16e}
-.fc-focus{background:linear-gradient(145deg,#11283d,#0b1b2c);border:1px solid #2b4a64;border-radius:9px;padding:10px 11px;margin-bottom:6px}
-.fc-focus-name{font-size:17px;font-weight:700;color:#f1f7ff;margin:5px 0}
-.fc-status{font:9px 'IBM Plex Mono';color:#63d9b5;line-height:1.9}
-[data-testid="stVerticalBlock"]{gap:.4rem}
-hr{border-color:#263e54!important}footer{visibility:hidden}
-@media(max-width:1100px){.block-container{padding:.35rem .45rem!important}.fc-queue{height:350px}.fc-alert-row{min-height:43px}}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+:root{--text:#f6efff;--muted:#c0accf;--violet:#b76bff;--magenta:#ed4dff;--pink:#ff79c8;--amber:#ffb45e}
+html,body,[data-testid="stAppViewContainer"],.stApp{background:radial-gradient(ellipse at 12% 8%,rgba(177,62,255,.24),transparent 30%),radial-gradient(ellipse at 88% 24%,rgba(48,121,255,.14),transparent 31%),radial-gradient(ellipse at 55% 95%,rgba(236,61,190,.15),transparent 34%),linear-gradient(145deg,#08040f 0%,#160922 46%,#090611 100%)!important;color:var(--text)!important;font-family:'DM Sans',sans-serif}
+[data-testid="stAppViewContainer"]{position:relative;isolation:isolate}
+[data-testid="stAppViewContainer"]:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.42;background-image:radial-gradient(circle at 8% 18%,rgba(228,92,255,.26) 0 5px,transparent 6px),radial-gradient(circle at 25% 68%,rgba(188,112,255,.18) 0 9px,transparent 10px),radial-gradient(circle at 73% 23%,rgba(255,111,214,.20) 0 6px,transparent 7px),radial-gradient(circle at 92% 77%,rgba(158,103,255,.23) 0 12px,transparent 13px),radial-gradient(circle at 49% 43%,rgba(255,255,255,.10) 0 4px,transparent 5px);background-size:310px 360px,420px 480px,370px 410px,510px 520px,260px 290px;animation:cosmic-drift 32s linear infinite}
+@keyframes cosmic-drift{to{background-position:0 -360px,0 480px,0 -410px,0 520px,0 -290px}}
+[data-testid="stHeader"]{background:rgba(10,5,18,.88)!important;height:2rem}
+[data-testid="stSidebar"]{background:linear-gradient(180deg,rgba(26,10,39,.98),rgba(12,7,22,.99))!important;border-right:1px solid #542c70!important}
+[data-testid="stSidebar"] *{color:#f0e5fb}
+[data-testid="stSidebar"] [data-testid="stRadio"] label{padding:7px 10px;border:1px solid #4a2b61;border-radius:8px;margin:3px 0;background:rgba(44,20,61,.62);font-size:12px;transition:all .2s ease}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover{border-color:#df70ff;background:rgba(96,40,125,.45);box-shadow:0 0 13px rgba(215,91,255,.15);transform:translateX(2px)}
+.block-container{max-width:100%!important;padding:.55rem .85rem .55rem!important}
+h1,h2,h3,h4{color:#fff5ff!important;font-family:'DM Sans',sans-serif!important;letter-spacing:-.025em}
+p,li,label,.stCaption{color:#d0bddc}
+.hero{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(112deg,rgba(43,15,62,.97),rgba(29,22,67,.94) 55%,rgba(22,34,69,.94));border:1px solid rgba(216,133,255,.55);border-radius:15px;padding:15px 18px;margin:0 0 10px;box-shadow:inset 0 0 38px rgba(201,82,255,.12),0 9px 28px rgba(0,0,0,.32),0 0 22px rgba(183,88,255,.12)}
+.hero:before{content:"";position:absolute;z-index:-1;right:5%;top:-115px;width:205px;height:205px;border-radius:50%;background:repeating-radial-gradient(circle,rgba(227,147,255,0) 0 16px,rgba(227,147,255,.45) 17px 18px,transparent 19px 27px);filter:drop-shadow(0 0 14px rgba(204,91,255,.7));opacity:.72;animation:halo-turn 28s linear infinite}
+.hero:after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(239,132,255,.08) 48%,transparent 72%);background-size:220% 100%;animation:hero-sheen 9s ease-in-out infinite;pointer-events:none}
+@keyframes halo-turn{to{transform:rotate(360deg)}}@keyframes hero-sheen{0%,100%{background-position:120% 0}50%{background-position:-80% 0}}
+.hero h1{font-size:25px!important;margin:2px 0!important}.hero p{font-size:11px;margin:2px 0 0;color:#d5c2e5;max-width:780px}
+.eyebrow{font:700 9px 'Space Mono';letter-spacing:.17em;color:#e28aff;text-transform:uppercase}
+.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:rgba(72,32,94,.62);border:1px solid rgba(213,133,255,.48);font:8px 'Space Mono';color:#f1d9ff;margin:7px 5px 0 0}
+[data-testid="stMetric"]{background:linear-gradient(145deg,rgba(42,22,59,.95),rgba(19,13,34,.96))!important;border:1px solid #59336e!important;border-radius:11px!important;padding:7px 10px!important;box-shadow:inset 0 0 20px rgba(214,95,255,.05),0 5px 16px rgba(0,0,0,.23)!important;transition:transform .2s ease,border-color .2s ease}
+[data-testid="stMetric"]:hover{transform:translateY(-2px);border-color:#d26aff!important;box-shadow:0 0 18px rgba(202,92,255,.16)!important}
+[data-testid="stMetricLabel"] p{font-size:9px!important;color:#c6afd8!important;text-transform:uppercase;letter-spacing:.08em}
+[data-testid="stMetricValue"]{font:700 18px 'Space Mono'!important;color:#fff3ff!important}
+[data-testid="stPlotlyChart"]{background:linear-gradient(145deg,rgba(26,14,39,.96),rgba(12,9,24,.98))!important;border:1px solid #58336e!important;border-radius:11px!important;padding:3px!important;box-shadow:inset 0 0 26px rgba(205,85,255,.055),0 7px 20px rgba(0,0,0,.25)!important;transition:border-color .2s ease,box-shadow .2s ease}
+[data-testid="stPlotlyChart"]:hover{border-color:#c66bff!important;box-shadow:0 0 18px rgba(204,93,255,.13)!important}
+[data-testid="stDataFrame"]{border:1px solid #55336a!important;border-radius:9px!important;overflow:hidden}
+.stButton button,.stDownloadButton button{background:linear-gradient(105deg,#4a2168,#30245f)!important;color:#fff2ff!important;border:1px solid #9d58c3!important;border-radius:8px!important;min-height:31px!important;transition:all .2s ease}
+.stButton button:hover,.stDownloadButton button:hover{border-color:#f08cff!important;box-shadow:0 0 15px rgba(222,100,255,.2)!important;transform:translateY(-1px)}
+.stTextInput input,.stTextArea textarea,.stSelectbox div[data-baseweb="select"]>div,.stNumberInput input{background:#170e25!important;color:#fff2ff!important;border-color:#68417e!important}
+.fc-queue{background:linear-gradient(150deg,rgba(39,19,55,.97),rgba(17,11,29,.98));border:1px solid #58356e;border-radius:11px;padding:10px;height:390px;overflow:hidden;box-shadow:inset 0 0 24px rgba(206,83,255,.05)}
+.fc-queue-title{font-size:15px;font-weight:800;color:#fff3ff;margin:4px 0 9px}
+.fc-alert-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center;padding:7px 2px;border-bottom:1px solid rgba(197,139,221,.18);min-height:48px}
+.fc-alert-row:last-child{border-bottom:0}.fc-alert-rule{font-size:10px;line-height:1.25;color:#f0e4f8;white-space:normal;overflow-wrap:anywhere}
+.fc-alert-meta{font:8px 'Space Mono';color:#b9a1ca}.fc-alert-tag{font:8px 'Space Mono';font-weight:700;letter-spacing:.04em;padding:3px 5px;border-radius:5px;background:#48203e;color:#ff9bd7}.fc-alert-tag.medium{background:#49301e;color:#ffd08d}
+.fc-focus{background:linear-gradient(145deg,rgba(41,21,58,.97),rgba(18,12,31,.98));border:1px solid #603a77;border-radius:10px;padding:10px 11px;margin-bottom:6px}
+.fc-focus-name{font-size:17px;font-weight:800;color:#fff3ff;margin:5px 0}.fc-status{font:9px 'Space Mono';color:#d18aff;line-height:1.9}
+[data-testid="stVerticalBlock"]{gap:.45rem}hr{border-color:#4a2e60!important}footer{visibility:hidden}
+@media(max-width:1100px){.block-container{padding:.4rem .5rem!important}.fc-queue{height:350px}.fc-alert-row{min-height:43px}.hero h1{font-size:21px!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+""",unsafe_allow_html=True)
 """,unsafe_allow_html=True)
 """,unsafe_allow_html=True)
 
@@ -181,11 +184,11 @@ def money(v):
 
 def chart_theme(fig,height=235):
     fig.update_layout(template="plotly_dark",paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Manrope",color="#b8cbe0",size=10),margin=dict(l=14,r=14,t=32,b=24),height=height,
-        legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9)),hoverlabel=dict(bgcolor="#10263b",font_color="#f3f8ff"),
+        font=dict(family="DM Sans",color="#e0cfea",size=10),margin=dict(l=14,r=14,t=32,b=24),height=height,
+        legend=dict(bgcolor="rgba(0,0,0,0)",font=dict(size=9)),hoverlabel=dict(bgcolor="#2b1740",font_color="#fff3ff"),
         transition=dict(duration=550,easing="cubic-in-out"),uirevision="fincrime-visual")
-    fig.update_xaxes(gridcolor="#20354b",tickfont_color="#90a7bf",automargin=True)
-    fig.update_yaxes(gridcolor="#20354b",tickfont_color="#90a7bf",automargin=True)
+    fig.update_xaxes(gridcolor="#3b2850",tickfont_color="#c5afd5",automargin=True)
+    fig.update_yaxes(gridcolor="#3b2850",tickfont_color="#c5afd5",automargin=True)
     return fig
 
 
@@ -203,16 +206,16 @@ def make_network_figure(selected, sample):
         xx,yy=(hx,hy) if r.synthetic_scenario!="Baseline" else (ex,ey)
         xx.extend([pos[selected][0],pos[target][0],None]); yy.extend([pos[selected][1],pos[target][1],None])
     fig=go.Figure()
-    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=8,color="rgba(48,166,235,.10)"),hoverinfo="skip",showlegend=False))
-    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=1.4,color="rgba(67,190,255,.78)"),hoverinfo="skip",showlegend=False))
-    fig.add_trace(go.Scatter(x=hx,y=hy,mode="lines",line=dict(width=10,color="rgba(255,137,48,.14)"),hoverinfo="skip",showlegend=False))
-    fig.add_trace(go.Scatter(x=hx,y=hy,mode="lines",line=dict(width=2.2,color="#ff963c"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=8,color="rgba(183,107,255,.13)"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=ex,y=ey,mode="lines",line=dict(width=1.5,color="rgba(208,130,255,.88)"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=hx,y=hy,mode="lines",line=dict(width=10,color="rgba(255,111,196,.18)"),hoverinfo="skip",showlegend=False))
+    fig.add_trace(go.Scatter(x=hx,y=hy,mode="lines",line=dict(width=2.2,color="#ff9bd7"),hoverinfo="skip",showlegend=False))
     xs=[pos[n][0] for n in nodes];ys=[pos[n][1] for n in nodes]
-    cs=["#ff9d3f" if n==selected else "#49d6ff" if n.startswith("CP") else "#91a9c2" for n in nodes]
+    cs=["#ffad62" if n==selected else "#d778ff" if n.startswith("CP") else "#9f8cb5" for n in nodes]
     sizes=[32 if n==selected else 17 for n in nodes]
     fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers",marker=dict(size=[z+10 for z in sizes],color=cs,opacity=.12,line=dict(width=0)),hoverinfo="skip",showlegend=False))
-    fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers+text",text=nodes,textposition="bottom center",textfont=dict(size=9,color="#dcecff"),marker=dict(size=sizes,color=cs,line=dict(width=1.4,color="#e9faff")),hovertemplate="<b>%{text}</b><extra>Linked entity</extra>",showlegend=False))
-    fig.update_layout(title=dict(text="ENTITY RELATIONSHIP INTELLIGENCE",font=dict(size=11,color="#7bdcff"),x=.02),xaxis=dict(visible=False,range=[-1.35,1.35]),yaxis=dict(visible=False,range=[-1.35,1.35],scaleanchor="x",scaleratio=1),margin=dict(l=3,r=3,t=30,b=18),height=365,showlegend=False)
+    fig.add_trace(go.Scatter(x=xs,y=ys,mode="markers+text",text=nodes,textposition="bottom center",textfont=dict(size=9,color="#f2e8ff"),marker=dict(size=sizes,color=cs,line=dict(width=1.4,color="#f7eaff")),hovertemplate="<b>%{text}</b><extra>Linked entity</extra>",showlegend=False))
+    fig.update_layout(title=dict(text="ENTITY RELATIONSHIP INTELLIGENCE",font=dict(size=11,color="#e39aff"),x=.02),xaxis=dict(visible=False,range=[-1.35,1.35]),yaxis=dict(visible=False,range=[-1.35,1.35],scaleanchor="x",scaleratio=1),margin=dict(l=3,r=3,t=30,b=18),height=365,showlegend=False)
     return chart_theme(fig,365)
 
 def run_readonly_sql(query: str):
