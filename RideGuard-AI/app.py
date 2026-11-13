@@ -107,6 +107,20 @@ st.sidebar.caption("MOBILITY RISK & OPERATIONS INTELLIGENCE")
 
 theme_mode = st.sidebar.radio("APPEARANCE", ["Dark", "Light"], horizontal=True, index=0)
 PALETTE = DARK_PALETTE if theme_mode == "Dark" else LIGHT_PALETTE
+
+st.markdown(f"""
+<style>
+.stApp, [data-testid="stAppViewContainer"] {{background:{PALETTE["bg"]};color:{PALETTE["text"]};}}
+[data-testid="stSidebar"],[data-testid="stSidebar"] > div {{background:{PALETTE["panel"]};color:{PALETTE["text"]};}}
+[data-testid="stSidebar"] label,[data-testid="stSidebar"] p,[data-testid="stSidebar"] span,[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{color:{PALETTE["text"]} !important;}}
+[data-testid="stHeader"] {{background:{PALETTE["bg"]};}}
+[data-testid="stMetric"] {{background:{PALETTE["panel"]};border:1px solid {PALETTE["border"]};}}
+[data-testid="stMetricLabel"] p {{color:{PALETTE["muted"]} !important;}}
+[data-testid="stMetricValue"] {{color:{PALETTE["text"]} !important;}}
+[data-testid="stDataFrame"] {{border:1px solid {PALETTE["border"]};border-radius:12px;}}
+</style>
+""", unsafe_allow_html=True)
+
 st.sidebar.caption("Choose your preferred appearance.")
 source_choice = st.sidebar.radio("DATA SOURCE", ["Synthetic demo data", "Upload my ride data"])
 uploaded = None
@@ -255,40 +269,135 @@ elif page == "Risk Lab":
         st.info("Submit a booking scenario to see the predicted outcome distribution.")
 
 elif page == "Route Intelligence":
-    st.subheader("Route-level operational signals")
-    if pickup_col and drop_col:
-        route_data = pd.DataFrame({
-            "Pickup": routes_df[pickup_col].astype("string").fillna("Unknown"),
-            "Drop": routes_df[drop_col].astype("string").fillna("Unknown"),
-            "Outcome": y.values,
-        })
-        route_data["Route"] = route_data["Pickup"] + " → " + route_data["Drop"]
-        route_summary = route_data.groupby("Route").agg(
-            Bookings=("Outcome","size"),
-            Completed=("Outcome",lambda s:(s=="Completed").sum()),
-            Unsuccessful=("Outcome",lambda s:(s!="Completed").sum()),
-        ).reset_index()
-        route_summary["Unsuccessful rate"] = route_summary["Unsuccessful"] / route_summary["Bookings"]
-        min_bookings = st.slider("Minimum bookings per route", 1, max(50,int(route_summary["Bookings"].max())), 5)
-        view = route_summary[route_summary["Bookings"] >= min_bookings].sort_values(
-            ["Unsuccessful rate","Bookings"], ascending=[False,False]
-        ).head(20)
-        if view.empty:
-            st.warning("No routes meet the selected minimum booking count.")
-        else:
-            fig = px.bar(view.sort_values("Unsuccessful rate"), x="Unsuccessful rate", y="Route",
-                         orientation="h", color="Unsuccessful rate", color_continuous_scale="Tealrose",
-                         hover_data=["Bookings","Completed","Unsuccessful"])
-            fig.update_xaxes(tickformat=".0%")
-            st.plotly_chart(chart_theme(fig,350), use_container_width=True)
-            st.dataframe(view, use_container_width=True, hide_index=True,
-                         column_config={"Unsuccessful rate":st.column_config.NumberColumn(format="%.1%%")})
-            st.download_button("Download route risk summary", route_summary.to_csv(index=False).encode(),
-                               "rideguard_route_summary.csv", "text/csv")
-            st.caption("Rates from small samples are unstable. Use the minimum-booking filter before interpreting route comparisons.")
-    else:
-        st.warning("Pickup and drop columns were not detected.")
+    st.subheader("Live mobility network")
+    st.caption("Explore demand corridors and historical unsuccessful-outcome signals across your ride network.")
 
+    # Approximate NCR area centroids for the built-in demo. Uploaded GPS columns take priority.
+    ncr_coords = {
+        "Connaught Place":(28.6315,77.2167),"Dwarka":(28.5921,77.0460),"Gurugram":(28.4595,77.0266),
+        "Noida":(28.5355,77.3910),"Saket":(28.5245,77.2066),"Rohini":(28.7495,77.0565),
+        "Karol Bagh":(28.6514,77.1907),"IGI Airport":(28.5562,77.1000),"Greater Noida":(28.4744,77.5040),
+        "Lajpat Nagar":(28.5677,77.2433),"Faridabad":(28.4089,77.3178),"Ghaziabad":(28.6692,77.4538),
+        "Indirapuram":(28.6415,77.3715),"Vaishali":(28.6450,77.3390),"Vasant Kunj":(28.5200,77.1580),
+        "Janakpuri":(28.6219,77.0878),"Pitampura":(28.7033,77.1322),"Vikaspuri":(28.6380,77.0700),
+        "South Delhi":(28.5350,77.2200),"Delhi":(28.6139,77.2090),
+    }
+    route_data = pd.DataFrame({
+        "Pickup":routes_df[pickup_col].astype("string").fillna("Unknown"),
+        "Drop":routes_df[drop_col].astype("string").fillna("Unknown"),
+        "Outcome":y.values,
+    })
+    vehicle_col = next((c for c in routes_df.columns if c.lower().strip() in {"vehicle type","vehicle"}),None)
+    if vehicle_col:
+        route_data["Vehicle Type"] = routes_df[vehicle_col].astype("string").fillna("Unknown").values
+
+    cols = {str(c).strip().lower().replace("_"," "):c for c in routes_df.columns}
+    plat = next((cols[k] for k in ["pickup latitude","pickup lat","origin latitude","origin lat"] if k in cols),None)
+    plon = next((cols[k] for k in ["pickup longitude","pickup lon","pickup lng","origin longitude","origin lon"] if k in cols),None)
+    dlat = next((cols[k] for k in ["drop latitude","drop lat","destination latitude","destination lat"] if k in cols),None)
+    dlon = next((cols[k] for k in ["drop longitude","drop lon","drop lng","destination longitude","destination lon"] if k in cols),None)
+    gps = all([plat,plon,dlat,dlon])
+
+    f1,f2 = st.columns(2)
+    with f1:
+        min_bookings = st.number_input("Minimum bookings per corridor",min_value=1,max_value=max(1,len(route_data)),value=min(5,len(route_data)),step=1)
+    with f2:
+        vehicle_options = ["All vehicles"] + sorted(route_data["Vehicle Type"].dropna().astype(str).unique().tolist()) if "Vehicle Type" in route_data else ["All vehicles"]
+        vehicle_filter = st.selectbox("Vehicle type",vehicle_options)
+
+    filtered = route_data.copy()
+    if vehicle_filter != "All vehicles" and "Vehicle Type" in filtered:
+        filtered = filtered[filtered["Vehicle Type"] == vehicle_filter]
+    filtered["Route"] = filtered["Pickup"] + " → " + filtered["Drop"]
+    summary = filtered.groupby(["Pickup","Drop","Route"]).agg(
+        Bookings=("Outcome","size"),
+        Completed=("Outcome",lambda v:(v=="Completed").sum()),
+        Unsuccessful=("Outcome",lambda v:(v!="Completed").sum()),
+    ).reset_index()
+    summary["Unsuccessful rate"] = summary["Unsuccessful"] / summary["Bookings"]
+    view = summary[summary["Bookings"] >= min_bookings].sort_values(["Bookings","Unsuccessful rate"],ascending=[False,False]).head(35)
+
+    if view.empty:
+        st.warning("No corridors meet this booking threshold. Reduce the minimum bookings filter.")
+    else:
+        node_rows = []
+        if gps:
+            for side,loc,latcol,loncol in [("Pickup","Pickup",plat,plon),("Drop","Drop",dlat,dlon)]:
+                temp = pd.DataFrame({"Location":routes_df.loc[filtered.index,loc].astype(str),
+                                     "Latitude":pd.to_numeric(routes_df.loc[filtered.index,latcol],errors="coerce"),
+                                     "Longitude":pd.to_numeric(routes_df.loc[filtered.index,loncol],errors="coerce")}).dropna()
+                node_rows.extend(temp.to_dict("records"))
+        if node_rows:
+            nodes = pd.DataFrame(node_rows).groupby("Location").agg(
+                Latitude=("Latitude","mean"),Longitude=("Longitude","mean")).reset_index()
+        else:
+            names = pd.unique(pd.concat([view["Pickup"],view["Drop"]],ignore_index=True))
+            nodes = pd.DataFrame([{"Location":str(n),"Latitude":ncr_coords[str(n)][0],"Longitude":ncr_coords[str(n)][1]}
+                                  for n in names if str(n) in ncr_coords])
+
+        if nodes.empty:
+            st.info("No map coordinates are available for these areas. Add pickup/drop latitude and longitude columns to map this dataset.")
+        else:
+            nodes["Bookings"] = nodes["Location"].apply(lambda n:int(view.loc[(view["Pickup"]==n)|(view["Drop"]==n),"Bookings"].sum()))
+            nodes["Unsuccessful rate"] = nodes["Location"].apply(
+                lambda n: float(view.loc[(view["Pickup"]==n)|(view["Drop"]==n),"Unsuccessful"].sum() /
+                                max(1,view.loc[(view["Pickup"]==n)|(view["Drop"]==n),"Bookings"].sum()))
+            )
+            map_fig = go.Figure()
+            line_colors = {"LOW":PALETTE["teal"],"MODERATE":PALETTE["amber"],"HIGH":PALETTE["coral"]}
+            for _,r in view.iterrows():
+                a=nodes[nodes["Location"].astype(str)==str(r["Pickup"])]
+                b=nodes[nodes["Location"].astype(str)==str(r["Drop"])]
+                if a.empty or b.empty: continue
+                rate=float(r["Unsuccessful rate"])
+                risk="HIGH" if rate>=.35 else "MODERATE" if rate>=.20 else "LOW"
+                map_fig.add_trace(go.Scattermapbox(
+                    lat=[a.iloc[0]["Latitude"],b.iloc[0]["Latitude"]],
+                    lon=[a.iloc[0]["Longitude"],b.iloc[0]["Longitude"]],
+                    mode="lines",line=dict(width=float(np.clip(2+np.log1p(r["Bookings"]),2,7)),color=line_colors[risk]),
+                    opacity=.68,hoverinfo="text",
+                    text=[f'{r["Route"]}<br>{int(r["Bookings"]):,} bookings<br>{rate:.1%} unsuccessful']*2,
+                    showlegend=False,
+                ))
+            node_colors=[PALETTE["coral"] if x>=.35 else PALETTE["amber"] if x>=.20 else PALETTE["teal"] for x in nodes["Unsuccessful rate"]]
+            map_fig.add_trace(go.Scattermapbox(
+                lat=nodes["Latitude"],lon=nodes["Longitude"],mode="markers+text",
+                text=nodes["Location"],textposition="top right",
+                marker=dict(size=np.clip(12+np.log1p(nodes["Bookings"])*2,13,25),color=node_colors,opacity=.98),
+                customdata=np.column_stack([nodes["Bookings"],nodes["Unsuccessful rate"]]),
+                hovertemplate="<b>%{text}</b><br>Booking volume: %{customdata[0]:,.0f}<br>Unsuccessful rate: %{customdata[1]:.1%}<extra></extra>",
+                name="Pickup / drop areas",
+            ))
+            map_fig.update_layout(
+                mapbox=dict(style="carto-darkmatter" if theme_mode=="Dark" else "carto-positron",
+                            center={"lat":float(nodes["Latitude"].mean()),"lon":float(nodes["Longitude"].mean())},zoom=8.5),
+                height=485,autosize=True,margin=dict(l=0,r=0,t=5,b=0),
+                paper_bgcolor=PALETTE["panel"],font=dict(color=PALETTE["text"]),
+            )
+            st.plotly_chart(map_fig,use_container_width=True,config={"displayModeBar":False,"scrollZoom":True})
+            st.markdown(
+                f'<span class="pill">CORRIDORS: {len(view)}</span>  <span class="pill">MAPPED AREAS: {len(nodes)}</span>  <span class="pill">VEHICLE: {vehicle_filter}</span>',
+                unsafe_allow_html=True,
+            )
+            st.caption("Area pins use approximate centroids when GPS is unavailable. Lines are schematic pickup-to-drop connections, not actual road paths or live vehicle locations.")
+
+        st.markdown("#### Highest-risk corridors")
+        left,right=st.columns([1.2,1])
+        with left:
+            fig=px.bar(view.sort_values("Unsuccessful rate").tail(12),x="Unsuccessful rate",y="Route",
+                       orientation="h",color="Unsuccessful rate",color_continuous_scale="Tealrose",
+                       hover_data=["Bookings","Completed","Unsuccessful"])
+            fig.update_xaxes(tickformat=".0%")
+            st.plotly_chart(chart_theme(fig,300),use_container_width=True)
+        with right:
+            st.dataframe(view[["Route","Bookings","Unsuccessful rate"]].head(15),use_container_width=True,hide_index=True,
+                         column_config={"Unsuccessful rate":st.column_config.NumberColumn(format="%.1%%")})
+        st.download_button("Download corridor risk summary",summary.to_csv(index=False).encode(),
+                           "rideguard_corridor_summary.csv","text/csv")
+    st.caption("Rates from small samples are unstable. Use the booking threshold before comparing corridors.")
+else:
+    st.warning("Pickup and drop columns were not detected.")
+ 
 elif page == "Model Diagnostics":
     st.subheader("Model quality & explainability")
     m1,m2,m3 = st.columns(3)
