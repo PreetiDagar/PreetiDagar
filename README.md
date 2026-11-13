@@ -49,6 +49,7 @@ I’m continuously strengthening my skills through hands-on projects, experiment
 | [Personal Portfolio](https://github.com/PreetiDagar/Portfolio) | A React-based portfolio website showcasing projects and work. |
 | [RideGuard AI](https://github.com/PreetiDagar/PreetiDagar/tree/main/RideGuard-AI) · [Live Demo](https://preetidagar-z56jn3rqwqy2okw2klzfvj.streamlit.app/) | End-to-end mobility risk intelligence app with booking-outcome ML, route analysis, scenario simulation and model diagnostics. |
 | [FinCrime SQL](https://github.com/PreetiDagar/PreetiDagar/tree/main/FinCrime-SQL) | SQL-driven financial transaction monitoring lab with DuckDB, explainable detection rules, a read-only SQL workbench and investigation workflow. Public demo uses synthetic data. |
+| [GRIDMIND AI](https://github.com/PreetiDagar/PreetiDagar/tree/main/GRIDMIND-AI) | Full-stack energy intelligence prototype combining a Next.js digital-twin interface, FastAPI energy API, forecasting-ready analytics and battery scenario simulation. Initial data is synthetic; Vercel/Render/Supabase deployment is being prepared. |
 
 ### AI & Machine Learning
 
