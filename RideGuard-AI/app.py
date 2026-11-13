@@ -391,7 +391,7 @@ elif page == "Route Intelligence":
             st.plotly_chart(chart_theme(fig,300),use_container_width=True)
         with right:
             st.dataframe(view[["Route","Bookings","Unsuccessful rate"]].head(15),use_container_width=True,hide_index=True,
-                         column_config={"Unsuccessful rate":st.column_config.NumberColumn(format="%.1%%")})
+                         column_config={"Unsuccessful rate":st.column_config.NumberColumn(format="%.1f%%")})
         st.download_button("Download corridor risk summary",summary.to_csv(index=False).encode(),
                            "rideguard_corridor_summary.csv","text/csv")
     st.caption("Rates from small samples are unstable. Use the booking threshold before comparing corridors.")
