@@ -52,7 +52,7 @@ def make_demo_data(seed: int = 42, n: int = 1800):
         "amount":amounts,
         "currency":"INR",
         "transaction_type":rng.choice(["CARD_PAYMENT","UPI_TRANSFER","BANK_TRANSFER","CASH_DEPOSIT","CASH_WITHDRAWAL"],n,p=[.36,.30,.18,.09,.07]),
-        "channel":rng.choice(["Mobile","Web","ATM","Branch","POS"],n,p=[.44,.22,.12,.08,.24]),
+        "channel":rng.choice(["Mobile","Web","ATM","Branch","POS"],n,p=[.34,.20,.10,.08,.28]),
         "merchant_category":rng.choice(["Retail","Travel","Electronics","Grocery","Cash","Gaming","Professional Services"],n),
         "merchant_country":rng.choice(countries,n,p=[.70,.07,.09,.09,.05]),
         "ip_country":rng.choice(countries,n,p=[.72,.06,.08,.09,.05]),
