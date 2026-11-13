@@ -69,16 +69,25 @@ def demo_data():
 def parse_uploaded(raw: bytes):
     return pd.read_csv(io.BytesIO(raw))
 
-def chart_theme(fig, height=330):
+def chart_theme(fig, height=285):
+    axis_style = dict(
+        gridcolor=PALETTE["border"], zerolinecolor=PALETTE["border"],
+        tickfont=dict(color=PALETTE["text"], size=10),
+        title_font=dict(color=PALETTE["text"], size=11),
+        linecolor=PALETTE["border"],
+    )
     fig.update_layout(
-        template="plotly_dark" if theme_mode == "Dark" else "plotly_white", height=height,
-        margin=dict(l=8, r=8, t=35, b=8),
+        template="plotly_dark" if theme_mode == "Dark" else "plotly_white",
+        height=height, autosize=True,
+        margin=dict(l=10, r=12, t=28, b=12),
         paper_bgcolor=PALETTE["panel"], plot_bgcolor=PALETTE["panel"],
         font=dict(color=PALETTE["text"], size=11),
-        legend=dict(bgcolor="rgba(0,0,0,0)"),
-        xaxis=dict(gridcolor=PALETTE["border"], zerolinecolor=PALETTE["border"]),
-        yaxis=dict(gridcolor=PALETTE["border"], zerolinecolor=PALETTE["border"]),
+        title_font=dict(color=PALETTE["text"]),
+        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color=PALETTE["text"], size=10)),
+        xaxis=axis_style, yaxis=axis_style,
+        transition=dict(duration=650, easing="cubic-in-out"),
     )
+    fig.update_annotations(font=dict(color=PALETTE["text"]))
     return fig
 
 def outcome_flags(series: pd.Series) -> pd.Series:
@@ -182,7 +191,7 @@ if page == "Command Center":
                          "Completed":PALETTE["teal"], "Cancelled":PALETTE["coral"],
                          "Incomplete":PALETTE["amber"], "No Driver Found":PALETTE["purple"]})
         fig.update_traces(textposition="inside", textinfo="percent")
-        st.plotly_chart(chart_theme(fig,350), use_container_width=True)
+        st.plotly_chart(chart_theme(fig,285), use_container_width=True)
     with right:
         st.markdown("#### Prediction performance by outcome")
         report = pd.DataFrame(result.report).T.reindex([x for x in result.labels])
@@ -240,7 +249,7 @@ elif page == "Risk Lab":
                              "Incomplete":PALETTE["amber"],"No Driver Found":PALETTE["purple"]})
             fig.update_xaxes(tickformat=".0%", range=[0,1], title=None)
             fig.update_yaxes(title=None)
-            st.plotly_chart(chart_theme(fig,260), use_container_width=True)
+            st.plotly_chart(chart_theme(fig,235), use_container_width=True)
         st.caption("Model estimates reflect patterns in the selected dataset; they are not guarantees or causal explanations.")
     else:
         st.info("Submit a booking scenario to see the predicted outcome distribution.")
@@ -271,7 +280,7 @@ elif page == "Route Intelligence":
                          orientation="h", color="Unsuccessful rate", color_continuous_scale="Tealrose",
                          hover_data=["Bookings","Completed","Unsuccessful"])
             fig.update_xaxes(tickformat=".0%")
-            st.plotly_chart(chart_theme(fig,500), use_container_width=True)
+            st.plotly_chart(chart_theme(fig,350), use_container_width=True)
             st.dataframe(view, use_container_width=True, hide_index=True,
                          column_config={"Unsuccessful rate":st.column_config.NumberColumn(format="%.1%%")})
             st.download_button("Download route risk summary", route_summary.to_csv(index=False).encode(),
@@ -293,7 +302,7 @@ elif page == "Model Diagnostics":
         hovertemplate="Actual %{y}<br>Predicted %{x}<br>Count %{z}<extra></extra>",
     ))
     cm.update_layout(title="Confusion matrix · actual vs predicted", xaxis_title="Predicted", yaxis_title="Actual")
-    st.plotly_chart(chart_theme(cm,390), use_container_width=True)
+    st.plotly_chart(chart_theme(cm,320), use_container_width=True)
     report = pd.DataFrame(result.report).T.reindex(result.labels)
     st.dataframe(report[["precision","recall","f1-score","support"]], use_container_width=True)
     with st.spinner("Calculating permutation importance on a test sample..."):
@@ -301,7 +310,7 @@ elif page == "Model Diagnostics":
     fig = px.bar(importance.sort_values("Importance"), x="Importance", y="Feature", orientation="h",
                  error_x="Std", color="Importance", color_continuous_scale="Teal")
     st.markdown("#### Global feature importance")
-    st.plotly_chart(chart_theme(fig,320), use_container_width=True)
+    st.plotly_chart(chart_theme(fig,275), use_container_width=True)
     st.caption("Permutation importance measures the drop in held-out balanced accuracy when one feature is shuffled. It describes model reliance, not causality.")
 
 elif page == "Data Explorer":
@@ -329,6 +338,32 @@ st.markdown(f"""
 .block-container {{max-width:1600px; padding:clamp(.65rem,1.6vw,1.45rem) clamp(.8rem,2.1vw,2rem) 2rem;}}
 [data-testid="stSidebar"] {{background:{PALETTE['panel']}; border-right:1px solid {PALETTE['border']};}}
 [data-testid="stSidebar"] > div {{padding-top:1rem;}}
+/* Theme-aware sidebar typography and controls */
+[data-testid="stSidebar"], [data-testid="stSidebar"] * {{
+  color:{PALETTE["text"]};
+}}
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] .stCaption,
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{
+  color:{PALETTE["muted"]} !important;
+}}
+[data-testid="stSidebar"] [role="radiogroup"] label,
+[data-testid="stSidebar"] [data-baseweb="select"] *,
+[data-testid="stSidebar"] input {{
+  color:{PALETTE["text"]} !important;
+}}
+[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] {{
+  gap:.45rem;
+}}
+[data-testid="stSidebar"] [data-testid="stRadio"] label p {{
+  color:{PALETTE["text"]} !important;
+}}
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
+  background:{PALETTE["panel2"]};
+  border:1px dashed {PALETTE["border"]};
+}}
+
 [data-testid="stMetric"] {{background:linear-gradient(145deg,{PALETTE['panel']},{PALETTE['panel2']}); border:1px solid {PALETTE['border']}; padding:clamp(9px,1vw,15px); border-radius:14px; min-width:0;}}
 [data-testid="stMetricLabel"] p {{color:{PALETTE['muted']} !important; font-size:.78rem;}}
 [data-testid="stMetricValue"] {{color:{PALETTE['text']} !important; font-size:clamp(1.15rem,2vw,1.8rem);}}
@@ -340,8 +375,12 @@ st.markdown(f"""
 div[data-testid="stFileUploaderDropzone"] {{background:{PALETTE['panel2']}; border:1px dashed {PALETTE['border']}; border-radius:12px;}}
 div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {{border-radius:10px; background:{PALETTE['panel2']};}}
 [data-testid="stDataFrame"], [data-testid="stTable"] {{border:1px solid {PALETTE['border']}; border-radius:12px; overflow:hidden;}}
-.hero {{position:relative; overflow:hidden; padding:clamp(1rem,2vw,1.65rem) clamp(1rem,2.3vw,2rem); border:1px solid {PALETTE['border']}; border-radius:20px;
-background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30%),linear-gradient(120deg,{PALETTE["panel2"]},{PALETTE["panel"]} 65%,{PALETTE["bg"]}); margin-bottom:1rem;}}
+.hero {{position:relative; isolation:isolate; overflow:hidden; padding:clamp(1rem,2vw,1.65rem) clamp(1rem,2.3vw,2rem); border:1px solid {PALETTE['border']}; border-radius:20px;
+background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30%),linear-gradient(120deg,{PALETTE["panel2"]},{PALETTE["panel"]} 65%,{PALETTE["bg"]}); margin-bottom:.7rem;}}
+.hero::after {{content:"";position:absolute;z-index:0;width:190px;height:190px;right:4%;top:-92px;border-radius:50%;background:radial-gradient(circle,rgba(53,208,186,.24),rgba(53,208,186,0) 70%);animation:rgFloat 7s ease-in-out infinite alternate;pointer-events:none;}}
+.hero::before {{content:"";position:absolute;z-index:0;width:9px;height:9px;right:20%;bottom:24px;border-radius:50%;background:{PALETTE["teal"]};box-shadow:0 0 18px {PALETTE["teal"]},-85px -36px 0 -2px {PALETTE["blue"]},-145px 12px 0 -3px {PALETTE["purple"]};animation:rgDrift 5s ease-in-out infinite alternate;pointer-events:none;}}
+.hero .eyebrow,.hero h1,.hero p {{position:relative;z-index:1;}}
+@keyframes rgDrift {{from {{transform:translate3d(0,0,0);}} to {{transform:translate3d(-16px,-10px,0);}}}}
 .hero::after {{content:"";position:absolute;z-index:-1;width:210px;height:210px;right:-50px;top:-95px;border-radius:50%;background:radial-gradient(circle,rgba(53,208,186,.22),transparent 70%);animation:rgFloat 9s ease-in-out infinite alternate;}}
 @keyframes rgFloat {{from {{transform:translate(0,0) scale(.9);}} to {{transform:translate(-16px,18px) scale(1.12);}}}}
 @keyframes rgEnter {{from {{opacity:0;transform:translateY(8px);}} to {{opacity:1;transform:translateY(0);}}}}
@@ -364,8 +403,8 @@ h2, h3 {{letter-spacing:-.025em;}}
 }}
 @media (max-width: 640px) {{
   .block-container {{padding:.6rem .7rem 1.25rem;}}
-  .hero {{border-radius:15px;margin-bottom:.8rem;}}
-  .hero h1 {{font-size:1.55rem;}}
+  .hero {{border-radius:15px;margin-bottom:.55rem;padding:1rem 1.1rem;}}
+  .hero h1 {{font-size:1.55rem;}}\n  [data-testid="stPlotlyChart"] {{min-height:0 !important;}}
   [data-testid="stHorizontalBlock"] {{flex-direction:column;gap:.5rem;}}
   [data-testid="column"] {{width:100% !important;flex:1 1 100% !important;}}
   [data-testid="stMetric"] {{padding:9px 11px;}}
