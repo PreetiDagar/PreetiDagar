@@ -25,6 +25,8 @@ The theory lens combines S-O-R with Dual-Factor Theory. The earlier structural r
 - AR Experience Lab: item-level AR experience scores and reliability diagnostic.
 - Omnichannel Journey: webrooming, showrooming and channel mix.
 - Customer Insights: construct comparisons and correlations.
+- Research Analytics: nine Pearson/Spearman hypothesis checks, multiple regression, confidence intervals and residual / collinearity diagnostics.
+- Customer Segmentation: exploratory K-means clusters, PCA respondent map, silhouette score and segment profiles.
 - Strategy Simulator: transparent illustrative what-if scenarios.
 - Data Studio: completeness, construct diagnostics, previews and exports.
 
@@ -54,11 +56,11 @@ Optional columns improve segmentation:
 
 The built-in demo dataset is synthetically generated for interface exploration. It is **not** the original research survey and must not be cited as empirical findings. Upload the original respondent-level data for actual analysis.
 
-The Strategy Simulator is an illustrative scenario index, not a causal model, forecast or operational guarantee. Reliability and descriptive statistics should be interpreted with sample size, measurement quality and research design in mind. The earlier research report noted weak internal consistency and limited inferential support in the 70-response quantitative dataset; this application does not remove those limitations.
+The Strategy Simulator is an illustrative scenario index, not a causal model, forecast or operational guarantee. Research Analytics reports unadjusted p-values for nine hypotheses; consider multiple-testing correction and the small convenience sample before interpreting results. Regression treats multi-item Likert composites as approximately continuous, which should be disclosed. K-means segments are exploratory profiles, not verified market personas. Reliability and descriptive statistics should be interpreted with sample size, measurement quality and research design in mind. The earlier research report noted weak internal consistency and limited inferential support in the 70-response quantitative dataset; this application does not remove those limitations.
 
 ## Stack
 
-Python · Streamlit · Pandas · NumPy · Plotly
+Python · Streamlit · Pandas · NumPy · Plotly · SciPy · Statsmodels · scikit-learn
 
 ## Deployment
 
