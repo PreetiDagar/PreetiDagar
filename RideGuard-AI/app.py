@@ -21,12 +21,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-PALETTE = {
+DARK_PALETTE = {
     "bg": "#0A1020", "panel": "#111B2E", "panel2": "#17243B",
     "border": "#273751", "text": "#F3F6FC", "muted": "#9BAAC2",
     "teal": "#35D0BA", "blue": "#70A7FF", "amber": "#F5BE5B",
     "coral": "#FF7C83", "purple": "#B6A0FF", "green": "#67D9A5",
 }
+LIGHT_PALETTE = {
+    "bg": "#F3F6FB", "panel": "#FFFFFF", "panel2": "#EAF0F7",
+    "border": "#D6DFEA", "text": "#172338", "muted": "#64748B",
+    "teal": "#078F83", "blue": "#316FC5", "amber": "#A96B08",
+    "coral": "#D94D5A", "purple": "#7454C8", "green": "#16845C",
+}
+PALETTE = DARK_PALETTE
 st.markdown(f"""
 <style>
 .stApp {{background:{PALETTE['bg']}; color:{PALETTE['text']};}}
@@ -88,6 +95,10 @@ def show_header():
 
 st.sidebar.markdown("## 🚕 RIDEGUARD AI")
 st.sidebar.caption("MOBILITY RISK & OPERATIONS INTELLIGENCE")
+
+theme_mode = st.sidebar.radio("APPEARANCE", ["Dark", "Light"], horizontal=True, index=0)
+PALETTE = DARK_PALETTE if theme_mode == "Dark" else LIGHT_PALETTE
+st.sidebar.caption("Choose your preferred appearance.")
 source_choice = st.sidebar.radio("DATA SOURCE", ["Synthetic demo data", "Upload my ride data"])
 uploaded = None
 if source_choice == "Upload my ride data":
@@ -117,7 +128,7 @@ except ValueError as exc:
     st.stop()
 
 if synthetic:
-    st.info("Demo mode: this dataset is synthetically generated for product demonstration. It is not real NCR ride-booking history and its model scores are not evidence of real-world performance.")
+    # Synthetic demo data disclosure remains in README; hide the in-app alert.
 
 min_class = int(y.value_counts().min()) if not y.empty else 0
 if len(y) < 30 or y.nunique() < 2 or min_class < 2:
@@ -315,7 +326,7 @@ st.markdown('<div class="small-muted">RideGuard AI · Built by Preeti Dagar · P
 # Responsive styling overrides
 st.markdown(f"""
 <style>
-:root {{ color-scheme: dark; }}
+:root {{ color-scheme: {theme_mode.lower()}; }}
 .stApp {{background:{PALETTE['bg']}; color:{PALETTE['text']};}}
 [data-testid="stHeader"] {{background:rgba(10,16,32,.92);}}
 .block-container {{max-width:1600px; padding:clamp(.65rem,1.6vw,1.45rem) clamp(.8rem,2.1vw,2rem) 2rem;}}
@@ -334,6 +345,13 @@ div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {{border-radiu
 [data-testid="stDataFrame"], [data-testid="stTable"] {{border:1px solid {PALETTE['border']}; border-radius:12px; overflow:hidden;}}
 .hero {{position:relative; overflow:hidden; padding:clamp(1rem,2vw,1.65rem) clamp(1rem,2.3vw,2rem); border:1px solid {PALETTE['border']}; border-radius:20px;
 background:radial-gradient(circle at 92% 10%,rgba(53,208,186,.13),transparent 30%),linear-gradient(120deg,#14223B,#111A2D 65%,#132A38); margin-bottom:1rem;}}
+.hero::after {{content:"";position:absolute;z-index:-1;width:210px;height:210px;right:-50px;top:-95px;border-radius:50%;background:radial-gradient(circle,rgba(53,208,186,.22),transparent 70%);animation:rgFloat 9s ease-in-out infinite alternate;}}
+@keyframes rgFloat {{from {{transform:translate(0,0) scale(.9);}} to {{transform:translate(-16px,18px) scale(1.12);}}}}
+@keyframes rgEnter {{from {{opacity:0;transform:translateY(8px);}} to {{opacity:1;transform:translateY(0);}}}}
+.hero {{animation:rgEnter .6s ease-out both;}}
+[data-testid="stMetric"],[data-testid="stVerticalBlockBorderWrapper"] {{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;}}
+[data-testid="stMetric"]:hover,[data-testid="stVerticalBlockBorderWrapper"]:hover {{transform:translateY(-2px);border-color:{PALETTE['teal']};box-shadow:0 8px 24px rgba(0,0,0,.08);}}
+.stButton button:hover,.stDownloadButton button:hover {{transform:translateY(-1px);transition:all .18s ease;}}
 .eyebrow {{font-size:.68rem; letter-spacing:.16em; color:{PALETTE['teal']}; font-weight:800;}}
 .hero h1 {{font-size:clamp(1.55rem,3vw,2.2rem); letter-spacing:-.045em; margin:.35rem 0 .25rem; color:#fff; line-height:1.15;}}
 .hero p {{color:{PALETTE['muted']}; margin:0; font-size:clamp(.88rem,1.2vw,1rem);}}
