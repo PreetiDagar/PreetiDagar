@@ -171,6 +171,34 @@ p,li,label,.stCaption{color:#d0bddc}
 .fc-alert-meta{font:8px 'Space Mono';color:#b9a1ca}.fc-alert-tag{font:8px 'Space Mono';font-weight:700;letter-spacing:.04em;padding:3px 5px;border-radius:5px;background:#48203e;color:#ff9bd7}.fc-alert-tag.medium{background:#49301e;color:#ffd08d}
 .fc-focus{background:linear-gradient(145deg,rgba(41,21,58,.97),rgba(18,12,31,.98));border:1px solid #603a77;border-radius:10px;padding:10px 11px;margin-bottom:6px}
 .fc-focus-name{font-size:17px;font-weight:800;color:#fff3ff;margin:5px 0}.fc-status{font:9px 'Space Mono';color:#d18aff;line-height:1.9}
+
+/* Layout safety: cards must grow with their content and never cover labels */
+:root{--primary-color:#c77dff;--secondary-background-color:#241334;--text-color:#f6efff}
+[data-testid="stMarkdownContainer"],[data-testid="stVerticalBlock"],[data-testid="stHorizontalBlock"],[data-testid="column"]{min-width:0;overflow:visible}
+.fc-focus,.panel{display:flow-root;box-sizing:border-box;position:relative;min-height:0;height:auto;overflow:visible;margin:0 0 16px!important;padding:13px 14px 15px!important;line-height:1.5}
+.fc-focus-name{line-height:1.35;margin:7px 0 8px}
+.fc-focus .pill,.panel .pill{display:inline-flex;align-items:center;vertical-align:middle;line-height:1.5;margin:9px 6px 3px 0;padding:4px 9px;white-space:normal}
+[data-testid="stMetric"]{display:block;position:relative;box-sizing:border-box;min-height:82px;height:auto;overflow:visible;margin:8px 0 14px!important;padding:12px 13px!important;transform:none!important}
+[data-testid="stMetricLabel"]{display:block;min-height:18px;margin-bottom:5px;overflow:visible}
+[data-testid="stMetricLabel"] p{line-height:1.4!important;white-space:normal!important;overflow-wrap:anywhere}
+[data-testid="stMetricValue"]{display:block;line-height:1.35!important;white-space:normal!important;overflow-wrap:anywhere}
+[data-testid="stPlotlyChart"]{display:block;position:relative;clear:both;box-sizing:border-box;margin:12px 0 18px!important;overflow:hidden}
+[data-testid="stDataFrame"]{display:block;position:relative;clear:both;box-sizing:border-box;margin:12px 0 18px!important;min-height:130px;overflow:hidden}
+[data-testid="stTable"]{margin:10px 0 16px!important}
+[data-testid="stVerticalBlock"]{gap:.8rem!important}
+[data-testid="stHorizontalBlock"]{align-items:stretch;gap:1rem}
+[data-testid="stAlert"]{background:linear-gradient(120deg,rgba(69,37,91,.96),rgba(39,32,78,.96))!important;border:1px solid #a66bd0!important;border-left:3px solid #d18aff!important;border-radius:9px!important;color:#f8efff!important;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+[data-testid="stAlert"] p,[data-testid="stAlert"] div,[data-testid="stAlert"] span{color:#f4e8ff!important}
+[data-testid="stAlert"] svg{fill:#d18aff!important;color:#d18aff!important}
+[data-testid="stSidebar"] [data-testid="stAlert"]{background:rgba(62,35,83,.94)!important;border-color:#9563b8!important}
+.stSuccess,[data-testid="stNotification"],[data-testid="stToast"]{background:linear-gradient(120deg,rgba(69,37,91,.96),rgba(39,32,78,.96))!important;border-color:#a66bd0!important;color:#f6eaff!important}
+button[kind="primary"],[data-testid="stFormSubmitButton"] button{background:linear-gradient(110deg,#743ca0,#51408f)!important;border-color:#c77dff!important;color:#fff!important}
+[data-testid="stProgressBar"]>div>div{background:linear-gradient(90deg,#a66bdb,#e17bc7)!important}
+[data-testid="stSlider"] [role="slider"]{background:#d18aff!important;border-color:#f0d6ff!important}
+[data-testid="stSelectbox"] [aria-selected="true"],[data-baseweb="menu"] [aria-selected="true"]{background:rgba(173,111,216,.28)!important}
+.panel{background:linear-gradient(145deg,rgba(41,21,58,.97),rgba(18,12,31,.98));border:1px solid #603a77;border-radius:10px;box-shadow:inset 0 0 20px rgba(206,103,255,.05)}
+:root{--success-color:#c58bff;--success-background-color:#3c2854}
+
 /* Prevent Streamlit cards, badges and chart containers from colliding */
 .fc-focus{display:flow-root;min-height:94px;overflow:visible;margin:0 0 12px;padding:12px 13px}
 .fc-focus .pill{display:inline-flex;align-items:center;line-height:1.45;margin:8px 5px 3px 0;white-space:normal}
