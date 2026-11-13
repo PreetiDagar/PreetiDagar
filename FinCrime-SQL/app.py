@@ -199,6 +199,31 @@ button[kind="primary"],[data-testid="stFormSubmitButton"] button{background:line
 .panel{background:linear-gradient(145deg,rgba(41,21,58,.97),rgba(18,12,31,.98));border:1px solid #603a77;border-radius:10px;box-shadow:inset 0 0 20px rgba(206,103,255,.05)}
 :root{--success-color:#c58bff;--success-background-color:#3c2854}
 
+/* Force Streamlit success/status panels away from the default green */
+div[data-testid="stAlert"],
+div[data-testid="stAlert"] > div,
+div[data-testid="stAlert"] [data-baseweb="notification"],
+div[role="alert"],
+div.stAlert{
+  background:linear-gradient(115deg,#38204f 0%,#30234f 55%,#282044 100%)!important;
+  background-color:#30234f!important;
+  border:1px solid #a86bd0!important;
+  border-left:3px solid #d58aff!important;
+  border-radius:10px!important;
+  color:#fff2ff!important;
+  box-shadow:0 5px 18px rgba(8,3,16,.24),inset 0 0 18px rgba(213,138,255,.07)!important;
+}
+div[data-testid="stAlert"] *,
+div[role="alert"] *,
+div.stAlert *{
+  color:#fff2ff!important;
+  opacity:1!important;
+}
+div[data-testid="stAlert"] svg,
+div[role="alert"] svg,
+div.stAlert svg{color:#e0a5ff!important;fill:#e0a5ff!important}
+
+
 /* Prevent Streamlit cards, badges and chart containers from colliding */
 .fc-focus{display:flow-root;min-height:94px;overflow:visible;margin:0 0 12px;padding:12px 13px}
 .fc-focus .pill{display:inline-flex;align-items:center;line-height:1.45;margin:8px 5px 3px 0;white-space:normal}
