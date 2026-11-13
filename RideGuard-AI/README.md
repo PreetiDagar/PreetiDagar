@@ -43,6 +43,7 @@ Python 3.11 is recommended.
 ```bash
 python -m venv .venv
 # Activate the environment
+cd RideGuard-AI
 pip install -r requirements.txt
 streamlit run app.py
 ```
@@ -62,9 +63,9 @@ Other columns may be present; they are not used as model predictors.
 
 ## Deploy on Streamlit Community Cloud
 
-1. Push this project folder to a **public GitHub repository**.
+1. This project currently lives in the `RideGuard-AI/` folder of the public `PreetiDagar/PreetiDagar` repository.
 2. Open https://share.streamlit.io/ and connect your GitHub account.
-3. Select the repository, branch `main`, and app entry point `app.py`.
+3. Select the public repository `PreetiDagar/PreetiDagar`, branch `main`, and app entry point `RideGuard-AI/app.py`.
 4. Deploy. No API key or secret is required for the current version.
 
 ## Project structure
